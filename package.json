@@ -1,0 +1,39 @@
+{
+  "name": "break-tweet-autolink",
+  "version": "0.1.0",
+  "description": "Break auto links in tweet text",
+  "main": "index.js",
+  "bin": {
+    "break-tweet-autolink": "./main.js"
+  },
+  "scripts": {
+    "build": "tsc -p . && chmod +x ./main.js",
+    "watch": "tsc -p . --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysd/break-tweet-link.git"
+  },
+  "keywords": [
+    "twitter",
+    "text",
+    "auto-link",
+    "tweet"
+  ],
+  "author": "rhysd <lin90162@yahoo.co.jp> (https://rhysd.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhysd/break-tweet-link/issues"
+  },
+  "homepage": "https://github.com/rhysd/break-tweet-link#readme",
+  "devDependencies": {
+    "@types/node": "^11.13.8",
+    "@types/twitter-text": "^2.0.0",
+    "prettier": "^1.17.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "twitter-text": "^3.0.0"
+  }
+}
