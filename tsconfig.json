@@ -22,6 +22,7 @@
   "include": [
     "main.ts",
     "index.ts",
-    "index_test.ts"
+    "index_test.ts",
+    "types/camelize.d.ts"
   ]
 }
