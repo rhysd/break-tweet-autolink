@@ -1,9 +1,0 @@
-*.ts
-*.js.map
-/tsconfig.json
-/.prettierrc.json
-/.gitignore
-/README.md
-/types
-/main.d.ts
-/index_test.d.ts

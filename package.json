@@ -24,6 +24,13 @@
   ],
   "author": "rhysd <lin90162@yahoo.co.jp> (https://rhysd.github.io/)",
   "license": "MIT",
+  "files": [
+    "index.js",
+    "main.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
   "bugs": {
     "url": "https://github.com/rhysd/break-tweet-link/issues"
   },
