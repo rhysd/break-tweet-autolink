@@ -21,6 +21,7 @@
   },
   "include": [
     "main.ts",
-    "index.ts"
+    "index.ts",
+    "index_test.ts"
   ]
 }

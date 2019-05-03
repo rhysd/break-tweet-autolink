@@ -9,7 +9,7 @@ interface ConfigAll {
     list: boolean;
 }
 
-export type Config = { [K in keyof ConfigAll]?: ConfigAll[K] };
+export type TweetAutoLinkBreakerConfig = { [K in keyof ConfigAll]?: ConfigAll[K] };
 
 export const DEFAULT_CONFIG: ConfigAll = {
     hashtag: false,
@@ -19,15 +19,16 @@ export const DEFAULT_CONFIG: ConfigAll = {
     mention: false,
     list: false,
 };
+const RE_DOT = /\./g;
 
 export class TweetAutoLinkBreaker {
     private readonly config: ConfigAll;
 
-    constructor(cfg: Config) {
-        this.config = { ...DEFAULT_CONFIG, ...cfg };
+    constructor(cfg?: TweetAutoLinkBreakerConfig | null) {
+        this.config = { ...DEFAULT_CONFIG, ...(cfg || {}) };
     }
 
-    breakAutoLink(text: string): string {
+    breakAutoLinks(text: string): string {
         const entities = tw.extractEntitiesWithIndices(text);
         if (entities.length === 0) {
             return text;
@@ -40,21 +41,22 @@ export class TweetAutoLinkBreaker {
             if (this.config.hashtag && 'hashtag' in entity) {
                 // Hashtag
                 replaced = '#\u200B' + entity.hashtag;
-            } else if (this.config.urlWithScheme && 'url' in entity && entity.url.startsWith('https://')) {
-                // URL with HTTPS scheme
-                replaced = 'https\u200B' + entity.url.slice(5);
-            } else if (this.config.urlWithScheme && 'url' in entity && entity.url.startsWith('http://')) {
-                // URL with HTTP scheme
-                replaced = 'http\u200B' + entity.url.slice(4);
+            } else if (
+                this.config.urlWithScheme &&
+                'url' in entity &&
+                (entity.url.startsWith('https://') || entity.url.startsWith('http://'))
+            ) {
+                // URL with scheme
+                replaced = entity.url.replace(RE_DOT, '.\u200B');
             } else if ((this.config.urlNoScheme || this.config.urlWithScheme) && 'url' in entity) {
                 // URL without scheme
-                replaced = entity.url.replace('.', '.\u200B');
+                replaced = entity.url.replace(RE_DOT, '.\u200B');
             } else if (this.config.cashtag && 'cashtag' in entity) {
                 // Cashtag
                 replaced = '$\u200B' + entity.cashtag;
             } else if (this.config.list && 'listSlug' in entity && entity.listSlug.length > 0) {
                 // Mention with list
-                replaced = `@\u200B${entity.screenName}/${entity.listSlug}`;
+                replaced = `@\u200B${entity.screenName}${entity.listSlug}`;
             } else if (this.config.mention && 'screenName' in entity) {
                 // Mention
                 replaced = '@\u200B' + entity.screenName;
