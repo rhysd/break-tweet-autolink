@@ -7,7 +7,7 @@
     "break-tweet-autolink": "./main.js"
   },
   "scripts": {
-    "build": "tsc -p . && chmod +x ./main.js",
+    "build": "tsc -d -p . && chmod +x ./main.js",
     "watch": "tsc -p . --watch",
     "mocha": "mocha index_test.js",
     "test": "npm run build && npm run mocha"
