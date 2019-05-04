@@ -24,10 +24,9 @@
   "license": "MIT",
   "files": [
     "index.js",
-    "main.js",
     "index.d.ts",
     "README.md",
-    "LICENSE"
+    "LICENSE.txt"
   ],
   "bugs": {
     "url": "https://github.com/rhysd/break-tweet-link/issues"
