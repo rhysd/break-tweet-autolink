@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "tsc -p . && chmod +x ./main.js",
+    "clean": "rm -rf ./node_modules ./package-lock.json ./*.js ./*.js.map ./*.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,7 +31,7 @@
     "@types/minimist": "^1.2.0"
   },
   "dependencies": {
-    "break-tweet-autolink": "^0.1.0",
+    "break-tweet-autolink": "^0.2.0",
     "camelize": "^1.0.0",
     "clipboardy": "^2.0.0",
     "minimist": "^1.2.0"
