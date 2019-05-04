@@ -1,0 +1,38 @@
+{
+  "name": "break-tweet-autolink-cli",
+  "version": "0.1.0",
+  "description": "CLI utility to break auto links in tweet text",
+  "main": "index.js",
+  "bin": {
+    "break-tweet-autolink": "./main.js"
+  },
+  "scripts": {
+    "build": "tsc -p . && chmod +x ./main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysd/break-tweet-autolink.git"
+  },
+  "keywords": [
+    "twitter",
+    "text",
+    "tweet",
+    "auto-link"
+  ],
+  "author": "rhysd <lin90162@yahoo.co.jp> (https://rhysd.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhysd/break-tweet-autolink/issues"
+  },
+  "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
+  "devDependencies": {
+    "@types/minimist": "^1.2.0"
+  },
+  "dependencies": {
+    "break-tweet-autolink": "^0.1.0",
+    "camelize": "^1.0.0",
+    "clipboardy": "^2.0.0",
+    "minimist": "^1.2.0"
+  }
+}

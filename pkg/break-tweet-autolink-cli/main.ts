@@ -2,7 +2,7 @@
 import * as clipboardy from 'clipboardy';
 import parseArgs = require('minimist');
 import camelize = require('camelize');
-import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from './index';
+import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
 
 if (process.argv.length === 3 && (process.argv[2] === '--help' || process.argv[2] === '-h')) {
     console.log(`Usage: break-tweet-autolink [OPTS... --] <ARGS>

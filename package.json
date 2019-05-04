@@ -3,11 +3,8 @@
   "version": "0.1.0",
   "description": "Break auto links in tweet text",
   "main": "index.js",
-  "bin": {
-    "break-tweet-autolink": "./main.js"
-  },
   "scripts": {
-    "build": "tsc -d -p . && chmod +x ./main.js",
+    "build": "tsc -d -p .",
     "watch": "tsc -p . --watch",
     "mocha": "mocha index_test.js",
     "test": "npm run build && npm run mocha"
@@ -45,10 +42,6 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "camelize": "^1.0.0",
-    "clipboardy": "^2.0.0",
-    "commander": "^2.20.0",
-    "minimist": "^1.2.0",
     "twitter-text": "^3.0.0"
   }
 }
