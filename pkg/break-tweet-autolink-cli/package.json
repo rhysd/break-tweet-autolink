@@ -7,7 +7,7 @@
     "break-tweet-autolink": "./main.js"
   },
   "scripts": {
-    "build": "tsc -p . && chmod +x ./main.js",
+    "build": "../../node_modules/.bin/tsc -p . && chmod +x ./main.js",
     "clean": "rm -rf ./node_modules ./package-lock.json ./*.js ./*.js.map ./*.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +16,8 @@
     "url": "git+https://github.com/rhysd/break-tweet-autolink.git"
   },
   "keywords": [
+    "cli",
+    "commandline-tool",
     "twitter",
     "text",
     "tweet",

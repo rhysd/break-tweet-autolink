@@ -1,0 +1,6 @@
+{
+  "name": "Break Tweet Autolink",
+  "version": "0.1",
+  "description": "Break autolinks such as URLs in tweet text",
+  "manifest_version": 2
+}

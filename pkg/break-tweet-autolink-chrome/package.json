@@ -1,0 +1,34 @@
+{
+  "name": "break-tweet-autolink-chrome",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension to break auto links in tweet text",
+  "main": "index.js",
+  "scripts": {
+    "build:tsc": "../../node_modules/.bin/tsc -p .",
+    "build:parcel": "parcel build -o content_script.js -d dist/ ./dist/main.js",
+    "build": "../../node_modules/.bin/npm-run-all build:tsc build:parcel",
+    "watch:tsc": "../../node_modules/.bin/tsc -p . --watch",
+    "watch:parcel": "parcel -o content_script.js -d dist/ ./dist/main.js",
+    "watch": "../../node_modules/.bin/npm-run-all -p watch:tsc watch:parcel",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysd/break-tweet-autolink.git"
+  },
+  "keywords": [],
+  "author": "rhysd <lin90162@yahoo.co.jp> (https://rhysd.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhysd/break-tweet-autolink/issues"
+  },
+  "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
+  "dependencies": {
+    "break-tweet-autolink": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.83",
+    "parcel-bundler": "^1.12.3"
+  }
+}

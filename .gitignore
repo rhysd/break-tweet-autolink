@@ -1,6 +1,7 @@
 package-lock.json
 node_modules
-/*.d.ts
-/pkg/break-tweet-autolink-cli/*.d.ts
+.cache
 *.js
 *.js.map
+/*.d.ts
+/pkg/break-tweet-autolink-cli/*.d.ts
