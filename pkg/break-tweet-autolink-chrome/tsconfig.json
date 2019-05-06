@@ -5,7 +5,7 @@
   },
   "include": [
     "main.ts",
-    "popup.ts",
-    "background.ts"
+    "background.ts",
+    "types/lib.d.ts"
   ]
 }

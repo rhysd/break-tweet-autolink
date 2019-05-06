@@ -2,5 +2,27 @@
   "name": "Break Tweet Autolink",
   "version": "0.1",
   "description": "Break autolinks such as URLs in tweet text",
-  "manifest_version": 2
+  "manifest_version": 2,
+  "permissions": [
+    "declarativeContent",
+    "activeTab"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mobile.twitter.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ],
+  "page_action": {}
 }

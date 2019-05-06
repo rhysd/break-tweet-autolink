@@ -1,0 +1,3 @@
+type Message = {
+    type: 'unlink';
+};
