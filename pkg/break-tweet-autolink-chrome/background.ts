@@ -3,7 +3,7 @@ chrome.runtime.onInstalled.addListener(() => {
         id: 'doTweetUnlink',
         title: 'Unlink Tweet Text',
         contexts: ['selection'],
-        // TODO: targetUrlPatterns: ...,
+        documentUrlPatterns: ['https://mobile.twitter.com/*', 'https://twitter.com/*'],
     });
 });
 

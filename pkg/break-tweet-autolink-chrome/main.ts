@@ -1,11 +1,21 @@
 import { TweetAutoLinkBreaker } from 'break-tweet-autolink';
 
 async function pasteUnlinkedTweetText(text: string) {
-    const b = new TweetAutoLinkBreaker();
+    // TODO: TweetAutoLinkBreakerConfig should be configurable
+    const b = new TweetAutoLinkBreaker({
+        hashtag: true,
+        urlNoScheme: true,
+        urlWithScheme: false,
+        cashtag: true,
+        mention: true,
+        list: true,
+    });
+
     const u = b.breakAutoLinks(text);
     if (u === '') {
         return;
     }
+
     // const prev = await navigator.clipboard.readText();
     await navigator.clipboard.writeText(u);
     document.execCommand('paste', false);
