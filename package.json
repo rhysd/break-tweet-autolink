@@ -1,6 +1,6 @@
 {
   "name": "break-tweet-autolink",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Break auto links in tweet text",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,9 @@
   "author": "rhysd <lin90162@yahoo.co.jp> (https://rhysd.github.io/)",
   "license": "MIT",
   "files": [
+    "index.ts",
     "index.js",
+    "index.js.map",
     "index.d.ts",
     "README.md",
     "LICENSE.txt"
