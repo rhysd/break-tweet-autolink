@@ -11,12 +11,20 @@ async function pasteUnlinkedTweetText(text: string, clipboard: string) {
         list: true,
     });
 
-    const u = b.breakAutoLinks(text);
-    if (u === '') {
+    const unlinked = b.breakAutoLinks(text);
+    if (unlinked === '') {
+        return;
+    }
+    if (unlinked === text) {
+        // When modifying nothing
+        const s = document.getSelection();
+        if (s !== null) {
+            s.removeAllRanges();
+        }
         return;
     }
 
-    await navigator.clipboard.writeText(u);
+    await navigator.clipboard.writeText(unlinked);
     document.execCommand('paste', false);
     return navigator.clipboard.writeText(clipboard);
 }
