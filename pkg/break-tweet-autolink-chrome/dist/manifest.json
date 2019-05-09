@@ -5,7 +5,10 @@
   "manifest_version": 2,
   "permissions": [
     "declarativeContent",
-    "activeTab"
+    "activeTab",
+    "clipboardWrite",
+    "clipboardRead",
+    "contextMenus"
   ],
   "background": {
     "scripts": [

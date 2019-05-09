@@ -55,10 +55,26 @@ function unlinkTweet() {
     alert('No tweet form found. Please open tweet form and type some text at first.');
 }
 
+async function pasteUnlinkedTweetText(text: string) {
+    const b = new TweetAutoLinkBreaker();
+    const u = b.breakAutoLinks(text);
+    if (u === '') {
+        return;
+    }
+    // const prev = await navigator.clipboard.readText();
+    await navigator.clipboard.writeText(u);
+    document.execCommand('paste', false);
+    // Restore previous clipboard content
+    // await navigator.clipboard.writeText(prev); TODO: Browser requires permission here
+}
+
 chrome.runtime.onMessage.addListener((msg: Message) => {
     switch (msg.type) {
         case 'unlink':
             unlinkTweet();
+            break;
+        case 'contextMenu':
+            pasteUnlinkedTweetText(msg.selected).catch(console.error);
             break;
         default:
             console.error('FATAL: Unexpected msg:', msg);
