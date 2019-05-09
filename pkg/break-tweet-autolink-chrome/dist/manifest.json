@@ -4,7 +4,6 @@
   "description": "Break autolinks such as URLs in tweet text",
   "manifest_version": 2,
   "permissions": [
-    "declarativeContent",
     "activeTab",
     "clipboardWrite",
     "clipboardRead",
@@ -26,6 +25,5 @@
         "content_script.js"
       ]
     }
-  ],
-  "page_action": {}
+  ]
 }

@@ -1,8 +1,4 @@
-type Message =
-    | {
-          type: 'unlink';
-      }
-    | {
-          type: 'contextMenu';
-          selected: string;
-      };
+type Message = {
+    type: 'contextMenu';
+    selected: string;
+};
