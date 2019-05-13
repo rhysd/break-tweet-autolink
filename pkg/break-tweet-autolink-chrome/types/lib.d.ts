@@ -6,4 +6,12 @@ type Message =
       }
     | {
           type: 'pageAction';
+      }
+    | {
+          type: 'responseCopy';
       };
+
+type MessageFromContent = {
+    type: 'requestCopy';
+    text: string;
+};

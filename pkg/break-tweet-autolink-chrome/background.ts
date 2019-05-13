@@ -9,8 +9,20 @@ async function readClipboardText() {
         });
         document.body.appendChild(textarea);
         textarea.focus();
+        // TODO: Check result
         document.execCommand('paste');
     });
+}
+
+function writeClipboardText(text: string) {
+    const textarea = document.createElement('textarea');
+    textarea.textContent = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    // TODO: Check result
+    document.execCommand('copy');
+    textarea.blur();
+    document.body.removeChild(textarea);
 }
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -68,4 +80,15 @@ chrome.pageAction.onClicked.addListener(tab => {
     }
     const msg: Message = { type: 'pageAction' };
     chrome.tabs.sendMessage(tab.id, msg);
+});
+
+chrome.runtime.onMessage.addListener((msg: MessageFromContent, _, sendResponse) => {
+    switch (msg.type) {
+        case 'requestCopy': {
+            writeClipboardText(msg.text);
+            const res: Message = { type: 'responseCopy' };
+            sendResponse(res);
+            break;
+        }
+    }
 });

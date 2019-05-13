@@ -30,6 +30,7 @@ async function unlinkSelectedText(text: string, clipboard: string): Promise<bool
     await navigator.clipboard.writeText(unlinked);
     document.execCommand('paste', false);
     await navigator.clipboard.writeText(clipboard);
+
     return true;
 }
 
@@ -56,10 +57,16 @@ function getEditorElements(): HTMLElement[] {
     return [];
 }
 
-function command(name: string, arg: any = null) {
+function command(name: string, arg: string | undefined = undefined) {
     if (!document.execCommand(name, false, arg)) {
         throw Error(`Command '${name}' failed with argument ${arg}`);
     }
+}
+
+function sendMessage(msg: MessageFromContent) {
+    return new Promise<Message>(resolve => {
+        chrome.runtime.sendMessage(msg, resolve);
+    });
 }
 
 async function unlinkTweetEditorText() {
@@ -93,10 +100,17 @@ async function unlinkTweetEditorText() {
 
         const unlinked = unlink(text);
         if (unlinked === text) {
+            sel.removeAllRanges();
             continue;
         }
 
-        command('insertText', unlinked);
+        command('delete');
+
+        await sendMessage({
+            type: 'requestCopy',
+            text: unlinked,
+        });
+        command('paste');
     }
 }
 
