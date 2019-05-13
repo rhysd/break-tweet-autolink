@@ -1,6 +1,6 @@
 import { TweetAutoLinkBreaker } from 'break-tweet-autolink';
 
-async function pasteUnlinkedTweetText(text: string, clipboard: string) {
+function unlink(text: string): string {
     // TODO: TweetAutoLinkBreakerConfig should be configurable
     const b = new TweetAutoLinkBreaker({
         hashtag: true,
@@ -10,10 +10,13 @@ async function pasteUnlinkedTweetText(text: string, clipboard: string) {
         mention: true,
         list: true,
     });
+    return b.breakAutoLinks(text);
+}
 
-    const unlinked = b.breakAutoLinks(text);
+async function unlinkSelectedText(text: string, clipboard: string): Promise<boolean> {
+    const unlinked = unlink(text);
     if (unlinked === '') {
-        return;
+        return false;
     }
     if (unlinked === text) {
         // When modifying nothing
@@ -21,18 +24,94 @@ async function pasteUnlinkedTweetText(text: string, clipboard: string) {
         if (s !== null) {
             s.removeAllRanges();
         }
-        return;
+        return false;
     }
 
     await navigator.clipboard.writeText(unlinked);
     document.execCommand('paste', false);
-    return navigator.clipboard.writeText(clipboard);
+    await navigator.clipboard.writeText(clipboard);
+    return true;
+}
+
+function getEditorElements(): HTMLElement[] {
+    const newEditors: HTMLElement[] = Array.from(document.querySelectorAll('.DraftEditor-root'));
+    if (newEditors.length > 0) {
+        return newEditors;
+    }
+
+    /* TODO: query for rich editors
+    const oldEditors: HTMLElement[] = Array.from(document.querySelectorAll('TODO: query for rich editors'));
+    if (oldEditors.length > 0) {
+        return oldEditors;
+    }
+    */
+
+    /* TODO: query for intent editor
+    const intentEditor: HTMLElement | null = document.querySelector('TODO: query for intent editor');
+    if (intentEditor !== null) {
+        return [intentEditor];
+    }
+    */
+
+    return [];
+}
+
+function command(name: string, arg: any = null) {
+    if (!document.execCommand(name, false, arg)) {
+        throw Error(`Command '${name}' failed with argument ${arg}`);
+    }
+}
+
+async function unlinkTweetEditorText() {
+    const editors = getEditorElements();
+    if (editors.length === 0) {
+        console.error('No editor element found. Cannot unlink tweet text');
+        return;
+    }
+
+    for (const editor of editors) {
+        editor.click();
+
+        const active = document.activeElement;
+        if (!editor.contains(active)) {
+            console.error('Element', editor, 'does not contain', active, 'after click()');
+            continue;
+        }
+
+        command('selectAll');
+
+        const sel = window.getSelection();
+        if (sel === null) {
+            console.error('Cannot get selection of page');
+            continue;
+        }
+
+        const text = sel.toString();
+        if (text === '') {
+            continue;
+        }
+
+        const unlinked = unlink(text);
+        if (unlinked === text) {
+            continue;
+        }
+
+        command('insertText', unlinked);
+    }
+}
+
+function handleError(err: Error) {
+    console.error('Error:', err.message, err);
+    // TODO: Use alert for user
 }
 
 chrome.runtime.onMessage.addListener((msg: Message) => {
     switch (msg.type) {
         case 'contextMenu':
-            pasteUnlinkedTweetText(msg.selected, msg.clipboard).catch(console.error);
+            unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
+            break;
+        case 'pageAction':
+            unlinkTweetEditorText().catch(handleError);
             break;
         default:
             console.error('FATAL: Unexpected msg:', msg);

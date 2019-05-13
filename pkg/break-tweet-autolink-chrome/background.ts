@@ -20,7 +20,25 @@ chrome.runtime.onInstalled.addListener(() => {
         contexts: ['selection'],
         documentUrlPatterns: ['https://mobile.twitter.com/*', 'https://twitter.com/*'],
     });
+
+    chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+        chrome.declarativeContent.onPageChanged.addRules([
+            {
+                conditions: [
+                    new chrome.declarativeContent.PageStateMatcher({
+                        pageUrl: { hostEquals: 'mobile.twitter.com' },
+                    }),
+                    new chrome.declarativeContent.PageStateMatcher({
+                        pageUrl: { hostEquals: 'twitter.com' },
+                    }),
+                ],
+                actions: [new chrome.declarativeContent.ShowPageAction()],
+            },
+        ]);
+    });
 });
+
+// TODO: Send TweetAutoLinkBreakerConfig and use it for unlinking
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId !== 'doTweetUnlink') {
@@ -41,4 +59,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             chrome.tabs.sendMessage(tabId, msg);
         })
         .catch(console.error);
+});
+
+chrome.pageAction.onClicked.addListener(tab => {
+    if (tab.id === undefined) {
+        console.error('Tab ID is not allocated!', tab);
+        return;
+    }
+    const msg: Message = { type: 'pageAction' };
+    chrome.tabs.sendMessage(tab.id, msg);
 });

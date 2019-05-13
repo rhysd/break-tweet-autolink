@@ -9,7 +9,7 @@
     "build:parcel": "parcel build -o content_script.js -d dist/ ./dist/main.js",
     "build": "../../node_modules/.bin/npm-run-all build:tsc build:parcel",
     "watch:tsc": "../../node_modules/.bin/tsc -p . --watch",
-    "watch:parcel": "parcel watch -o content_script.js -d dist/ ./dist/main.js",
+    "watch:parcel": "parcel watch --no-hmr -o content_script.js -d dist/ ./dist/main.js",
     "watch": "../../node_modules/.bin/npm-run-all -p watch:tsc watch:parcel",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
