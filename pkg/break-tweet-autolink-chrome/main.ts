@@ -1,5 +1,11 @@
 import { TweetAutoLinkBreaker } from 'break-tweet-autolink';
 
+function command(name: string, arg: string | undefined = undefined) {
+    if (!document.execCommand(name, false, arg)) {
+        throw Error(`Command '${name}' failed with argument ${arg}`);
+    }
+}
+
 function unlink(text: string): string {
     // TODO: TweetAutoLinkBreakerConfig should be configurable
     const b = new TweetAutoLinkBreaker({
@@ -28,39 +34,10 @@ async function unlinkSelectedText(text: string, clipboard: string): Promise<bool
     }
 
     await navigator.clipboard.writeText(unlinked);
-    document.execCommand('paste', false);
+    command('paste');
     await navigator.clipboard.writeText(clipboard);
 
     return true;
-}
-
-function getEditorElements(): HTMLElement[] {
-    const newEditors: HTMLElement[] = Array.from(document.querySelectorAll('.DraftEditor-root'));
-    if (newEditors.length > 0) {
-        return newEditors;
-    }
-
-    /* TODO: query for rich editors
-    const oldEditors: HTMLElement[] = Array.from(document.querySelectorAll('TODO: query for rich editors'));
-    if (oldEditors.length > 0) {
-        return oldEditors;
-    }
-    */
-
-    /* TODO: query for intent editor
-    const intentEditor: HTMLElement | null = document.querySelector('TODO: query for intent editor');
-    if (intentEditor !== null) {
-        return [intentEditor];
-    }
-    */
-
-    return [];
-}
-
-function command(name: string, arg: string | undefined = undefined) {
-    if (!document.execCommand(name, false, arg)) {
-        throw Error(`Command '${name}' failed with argument ${arg}`);
-    }
 }
 
 function sendMessage(msg: MessageFromContent) {
@@ -69,49 +46,36 @@ function sendMessage(msg: MessageFromContent) {
     });
 }
 
-async function unlinkTweetEditorText() {
-    const editors = getEditorElements();
-    if (editors.length === 0) {
-        console.error('No editor element found. Cannot unlink tweet text');
+async function unlinkTextInSelection() {
+    const sel = window.getSelection();
+    if (sel === null) {
         return;
     }
 
-    for (const editor of editors) {
-        editor.click();
-
-        const active = document.activeElement;
-        if (!editor.contains(active)) {
-            console.error('Element', editor, 'does not contain', active, 'after click()');
-            continue;
-        }
-
-        command('selectAll');
-
-        const sel = window.getSelection();
-        if (sel === null) {
-            console.error('Cannot get selection of page');
-            continue;
-        }
-
-        const text = sel.toString();
-        if (text === '') {
-            continue;
-        }
-
-        const unlinked = unlink(text);
-        if (unlinked === text) {
-            sel.removeAllRanges();
-            continue;
-        }
-
-        command('delete');
-
-        await sendMessage({
-            type: 'requestCopy',
-            text: unlinked,
-        });
-        command('paste');
+    const text = sel.toString();
+    if (text === '') {
+        // No text is selected
+        alert('Please select text which you want to convert in Tweet form');
+        return;
     }
+
+    const unlinked = unlink(text);
+    if (unlinked === text) {
+        sel.removeAllRanges();
+        return;
+    }
+
+    // Note: navigator.clipboard.writeText() does not work here. It throws 'Element not focused'
+    // Exception when this script is called from page action. It works when it is called via
+    // contextMenus, though.
+    // Instead, using background script hack to save content to clipboard.
+    await sendMessage({
+        type: 'requestCopy',
+        text: unlinked,
+    });
+
+    command('paste');
+    sel.removeAllRanges();
 }
 
 function handleError(err: Error) {
@@ -125,7 +89,7 @@ chrome.runtime.onMessage.addListener((msg: Message) => {
             unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
             break;
         case 'pageAction':
-            unlinkTweetEditorText().catch(handleError);
+            unlinkTextInSelection().catch(handleError);
             break;
         default:
             console.error('FATAL: Unexpected msg:', msg);
