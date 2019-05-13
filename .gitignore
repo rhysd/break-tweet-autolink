@@ -5,3 +5,4 @@ node_modules
 *.js.map
 /*.d.ts
 /pkg/break-tweet-autolink-cli/*.d.ts
+/pkg/break-tweet-autolink-chrome/dist/css/bulma.min.css

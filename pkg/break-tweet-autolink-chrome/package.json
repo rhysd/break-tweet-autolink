@@ -11,7 +11,8 @@
     "watch:tsc": "../../node_modules/.bin/tsc -p . --watch",
     "watch:parcel": "parcel watch --no-hmr -o content_script.js -d dist/ ./dist/main.js",
     "watch": "../../node_modules/.bin/npm-run-all -p watch:tsc watch:parcel",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cp node_modules/bulma/css/bulma.min.css dist/css/"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   },
   "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
   "dependencies": {
-    "break-tweet-autolink": "^0.2.1"
+    "break-tweet-autolink": "^0.2.1",
+    "bulma": "^0.7.4"
   },
   "devDependencies": {
     "@types/chrome": "0.0.83",

@@ -1,4 +1,14 @@
-import { TweetAutoLinkBreaker } from 'break-tweet-autolink';
+import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
+import { Message, MessageFromContent } from './message';
+
+const DEFAULT_CONFIG = {
+    hashtag: true,
+    urlNoScheme: true,
+    urlWithScheme: false,
+    cashtag: true,
+    mention: true,
+    list: true,
+};
 
 function command(name: string, arg: string | undefined = undefined) {
     if (!document.execCommand(name, false, arg)) {
@@ -6,16 +16,9 @@ function command(name: string, arg: string | undefined = undefined) {
     }
 }
 
-function unlink(text: string): string {
+function unlink(text: string, cfg: TweetAutoLinkBreakerConfig = DEFAULT_CONFIG): string {
     // TODO: TweetAutoLinkBreakerConfig should be configurable
-    const b = new TweetAutoLinkBreaker({
-        hashtag: true,
-        urlNoScheme: true,
-        urlWithScheme: false,
-        cashtag: true,
-        mention: true,
-        list: true,
-    });
+    const b = new TweetAutoLinkBreaker(cfg);
     return b.breakAutoLinks(text);
 }
 
@@ -46,7 +49,7 @@ function sendMessage(msg: MessageFromContent) {
     });
 }
 
-async function unlinkTextInSelection() {
+async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
     const sel = window.getSelection();
     if (sel === null) {
         return;
@@ -59,7 +62,7 @@ async function unlinkTextInSelection() {
         return;
     }
 
-    const unlinked = unlink(text);
+    const unlinked = unlink(text, cfg);
     if (unlinked === text) {
         sel.removeAllRanges();
         return;
@@ -89,9 +92,10 @@ chrome.runtime.onMessage.addListener((msg: Message) => {
             unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
             break;
         case 'pageAction':
-            unlinkTextInSelection().catch(handleError);
+            unlinkTextInSelection(msg.config).catch(handleError);
             break;
         default:
             console.error('FATAL: Unexpected msg:', msg);
+            break;
     }
 });

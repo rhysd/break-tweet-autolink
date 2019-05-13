@@ -1,12 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "esNext",
     "target": "es2017",
     "outDir": "./dist"
   },
   "include": [
     "main.ts",
     "background.ts",
-    "types/lib.d.ts"
+    "popup.ts",
+    "message.ts"
   ]
 }

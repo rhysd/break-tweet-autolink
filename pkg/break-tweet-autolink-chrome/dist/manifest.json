@@ -27,5 +27,7 @@
       ]
     }
   ],
-  "page_action": {}
+  "page_action": {
+    "default_popup": "popup.html"
+  }
 }

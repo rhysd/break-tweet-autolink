@@ -1,3 +1,5 @@
+import { Message, MessageFromContent, MessageFromPopup } from './message';
+
 // Workaround since navigator.clipboard.readText() in content script still requires user permission
 // with a permission dialog even if 'clipboardRead' permission is set. This may be a bug of Chrome.
 async function readClipboardText() {
@@ -73,16 +75,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         .catch(console.error);
 });
 
-chrome.pageAction.onClicked.addListener(tab => {
-    if (tab.id === undefined) {
-        console.error('Tab ID is not allocated!', tab);
-        return;
-    }
-    const msg: Message = { type: 'pageAction' };
-    chrome.tabs.sendMessage(tab.id, msg);
-});
-
-chrome.runtime.onMessage.addListener((msg: MessageFromContent, _, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup, _, sendResponse) => {
     switch (msg.type) {
         case 'requestCopy': {
             writeClipboardText(msg.text);
@@ -90,5 +83,25 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent, _, sendResponse) 
             sendResponse(res);
             break;
         }
+        case 'unlinkSelectedText': {
+            chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+                if (tabs.length === 0) {
+                    return;
+                }
+                const tab = tabs[0];
+                if (tab.id === undefined) {
+                    return;
+                }
+                const req: Message = {
+                    type: 'pageAction',
+                    config: msg.config,
+                };
+                chrome.tabs.sendMessage(tab.id, req);
+            });
+            break;
+        }
+        default:
+            console.error('FATAL: Unexpected msg:', msg);
+            break;
     }
 });

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./css/bulma.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main>
+      <div id="settings-box" class="box">
+        <label class="checkbox">
+          <input id="cfg-mention" type="checkbox" checked>
+          Mention
+        </label>
+        <label class="checkbox">
+          <input id="cfg-list" type="checkbox" checked>
+          List
+        </label>
+        <label class="checkbox">
+          <input id="cfg-hashtag" type="checkbox" checked>
+          Hashtag
+        </label>
+        <label class="checkbox">
+          <input id="cfg-cashtag" type="checkbox" checked>
+          CashTag
+        </label>
+        <label class="checkbox">
+          <input id="cfg-url-no-scheme" type="checkbox" checked>
+          URL (No Scheme)
+        </label>
+        <label class="checkbox">
+          <input id="cfg-url-scheme" type="checkbox">
+          URL (With Scheme)
+        </label>
+      </div>
+      <div id="btn-container">
+        <a id="unlink-btn" class="button is-info">Unlink Selected Text</a>
+      </div>
+    </main>
+    <script src="commonjs_workaround.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
