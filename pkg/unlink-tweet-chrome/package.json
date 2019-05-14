@@ -1,5 +1,5 @@
 {
-  "name": "break-tweet-autolink-chrome",
+  "name": "unlink-tweet-chrome",
   "version": "0.1.0",
   "private": true,
   "description": "Chrome extension to break auto links in tweet text",

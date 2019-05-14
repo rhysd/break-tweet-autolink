@@ -1,7 +1,7 @@
 {
-  "name": "Break Tweet Autolink",
+  "name": "Unlink Tweet",
   "version": "0.1",
-  "description": "Break autolinks such as URLs in tweet text",
+  "description": "Break autolinks such as URLs in selected tweet text",
   "manifest_version": 2,
   "permissions": [
     "activeTab",
