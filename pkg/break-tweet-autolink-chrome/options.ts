@@ -12,7 +12,7 @@ type OptionName = typeof OPTION_NAMES[number];
 type Options = { [K in OptionName]: boolean };
 
 const saveButton = document.getElementById('save-btn')! as HTMLButtonElement;
-const restoreDefaultButton = document.getElementById('restore-default-btn')! as HTMLButtonElement;
+const resetButton = document.getElementById('reset-btn')! as HTMLButtonElement;
 
 // prettier-ignore
 const DEFAULT_OPTIONS: Options = {
@@ -71,7 +71,7 @@ saveButton.addEventListener('click', () => {
     });
 });
 
-restoreDefaultButton.addEventListener('click', () => {
+resetButton.addEventListener('click', () => {
     setOptionsToElems(DEFAULT_OPTIONS);
     saveOptionsToStorage(DEFAULT_OPTIONS);
 });
