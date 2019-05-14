@@ -60,8 +60,13 @@ function loadOptionsFromStrage() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    setOptionsToElems(DEFAULT_OPTIONS);
-    loadOptionsFromStrage().then(setOptionsToElems);
+    loadOptionsFromStrage().then(opts => {
+        if (Object.keys(opts).length > 0) {
+            setOptionsToElems(opts);
+        } else {
+            setOptionsToElems(DEFAULT_OPTIONS);
+        }
+    });
 });
 
 saveButton.addEventListener('click', () => {
