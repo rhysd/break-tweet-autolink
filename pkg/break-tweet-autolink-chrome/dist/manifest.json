@@ -8,6 +8,7 @@
     "clipboardWrite",
     "clipboardRead",
     "contextMenus",
+    "storage",
     "declarativeContent"
   ],
   "background": {
@@ -29,5 +30,6 @@
   ],
   "page_action": {
     "default_popup": "popup.html"
-  }
+  },
+  "options_page": "options.html"
 }

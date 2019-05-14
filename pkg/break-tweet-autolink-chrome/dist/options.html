@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes" />
+    <title>Break Tweet Auto Link Options</title>
+    <link rel="stylesheet" href="./css/bulma.min.css" />
+    <link rel="stylesheet" href="./css/options.css" />
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Default Options</h1>
+        <h2 class="subtitle">Choose what you want to unlink by default</h2>
+        <table class="table is-striped">
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>
+                <input id="option-mention" type="checkbox">
+              </th>
+              <th>
+                Mention
+              </th>
+              <th>
+                <code>@name</code>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <input id="option-list" type="checkbox">
+              </th>
+              <th>
+                List
+              </th>
+              <th>
+                <code>@name/list</code>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <input id="option-hashtag" type="checkbox">
+              </th>
+              <th>
+                Hashtag
+              </th>
+              <th>
+                <code>#hashtag</code>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <input id="option-cashtag" type="checkbox">
+              </th>
+              <th>
+                Cashtag
+              </th>
+              <th>
+                <code>$cashtag</code>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <input id="option-url-no-scheme" type="checkbox">
+              </th>
+              <th>
+                URL without scheme
+              </th>
+              <th>
+                <code>example.com</code>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <input id="option-url-with-scheme" type="checkbox">
+              </th>
+              <th>
+                URL with scheme
+              </th>
+              <th>
+                <code>https://example.com</code>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+        <div class="container">
+          <button id="save-btn" class="button is-info">Save</button>
+          <button id="restore-default-btn" class="button is-pulled-right">Restore Default</button>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Notation</h1>
+        <strong>Break Tweet Autolink</strong> by <a href="https://rhysd.github.io" rel="noopener" target="_blank">rhysd</a>.
+        The source code is hosted at <a href="https://github.com/rhysd/break-tweet-autolink" rel="noopener" target="_blank">GitHub</a>
+        and distributed under <a href="http://opensource.org/licenses/mit-license.php" rel="noopener" target="_blank">the MIT License</a>.
+        Please use this extension at your own risk.
+      </div>
+    </section>
+    <script src="options.js"></script>
+  </body>
+</html>

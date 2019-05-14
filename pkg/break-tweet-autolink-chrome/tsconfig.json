@@ -9,6 +9,7 @@
     "main.ts",
     "background.ts",
     "popup.ts",
+    "options.ts",
     "message.ts"
   ]
 }
