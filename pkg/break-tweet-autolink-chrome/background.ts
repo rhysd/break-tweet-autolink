@@ -96,7 +96,7 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
                     type: 'pageAction',
                     config: msg.config,
                 };
-                chrome.tabs.sendMessage(tab.id, req);
+                chrome.tabs.sendMessage(tab.id, req, sendResponse);
             });
             break;
         }

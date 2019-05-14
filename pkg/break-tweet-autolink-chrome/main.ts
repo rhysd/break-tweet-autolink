@@ -86,16 +86,18 @@ function handleError(err: Error) {
     // TODO: Use alert for user
 }
 
-chrome.runtime.onMessage.addListener((msg: Message) => {
+chrome.runtime.onMessage.addListener((msg: Message, _, sendResponse) => {
     switch (msg.type) {
         case 'contextMenu':
             unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
-            break;
+            return false;
         case 'pageAction':
-            unlinkTextInSelection(msg.config).catch(handleError);
-            break;
+            unlinkTextInSelection(msg.config)
+                .catch(handleError)
+                .then(sendResponse);
+            return true;
         default:
             console.error('FATAL: Unexpected msg:', msg);
-            break;
+            return false;
     }
 });

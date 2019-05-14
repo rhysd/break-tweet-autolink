@@ -23,5 +23,5 @@ unlink.addEventListener('click', () => {
         type: 'unlinkSelectedText',
         config,
     };
-    chrome.runtime.sendMessage(msg);
+    chrome.runtime.sendMessage(msg, () => window.close());
 });
