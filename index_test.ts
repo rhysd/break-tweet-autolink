@@ -53,6 +53,8 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
         ['foo.example.com', 'foo.\u200Bexample.\u200Bcom', { urlNoScheme: true }],
     'no url without scheme':
         ['visit foo.example.com and say hello', 'visit foo.example.com and say hello', { urlNoScheme: false }],
+    'no url with scheme with url without scheme config enabled':
+        ['https://foo.example.com', 'https://foo.example.com', { urlNoScheme: true, urlWithScheme: false }],
     'url with https scheme':
         [
             'visit https://foo.example.com and say hello',
@@ -79,6 +81,10 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
         ],
     'only url with https scheme':
         ['https://foo.example.com', 'https://foo.\u200Bexample.\u200Bcom', { urlWithScheme: true }],
+    'no url with scheme':
+        ['https://foo.example.com', 'https://foo.example.com', { urlWithScheme: false }],
+    'no url without scheme with url with scheme config enabled':
+        ['foo.example.com', 'foo.example.com', { urlNoScheme: false, urlWithScheme: true }],
     'cashtag':
         ['At $GOOG, how is going?', 'At $\u200BGOOG, how is going?', { cashtag: true }],
     'cashtag at start':
@@ -111,8 +117,6 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
             'hi @name and list @foo/list, #this URL is awesome example.com https://example.com please see at $GOOG',
             { hashtag: false, urlNoScheme: false, urlWithScheme: false, cashtag: false, mention: false, list: false },
         ],
-    // TODO: mix hashtag and url
-    // TODO: double URLs
 };
 
 const entities: ReadonlyArray<[keyof TweetAutoLinkBreakerConfig, string, string]> = [

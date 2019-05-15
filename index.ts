@@ -48,7 +48,11 @@ export class TweetAutoLinkBreaker {
             ) {
                 // URL with scheme
                 replaced = entity.url.replace(RE_DOT, '.\u200B');
-            } else if ((this.config.urlNoScheme || this.config.urlWithScheme) && 'url' in entity) {
+            } else if (
+                this.config.urlNoScheme &&
+                'url' in entity &&
+                (!entity.url.startsWith('https://') && !entity.url.startsWith('http://'))
+            ) {
                 // URL without scheme
                 replaced = entity.url.replace(RE_DOT, '.\u200B');
             } else if (this.config.cashtag && 'cashtag' in entity) {
