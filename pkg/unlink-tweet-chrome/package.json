@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
   "dependencies": {
-    "break-tweet-autolink": "^0.2.1",
+    "break-tweet-autolink": "^0.2.2",
     "bulma": "^0.7.4"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.83",
+    "@types/chrome": "0.0.85",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "parcel-bundler": "^1.12.3"
