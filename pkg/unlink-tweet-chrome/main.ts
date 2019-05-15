@@ -16,6 +16,10 @@ function command(name: string, arg: string | undefined = undefined) {
     }
 }
 
+function afterMilliseconds(ms: number) {
+    return new Promise<void>(resolve => setTimeout(resolve, ms));
+}
+
 function unlink(text: string, cfg: TweetAutoLinkBreakerConfig = DEFAULT_CONFIG): string {
     // TODO: TweetAutoLinkBreakerConfig should be configurable
     const b = new TweetAutoLinkBreaker(cfg);
@@ -49,14 +53,39 @@ function sendMessage(msg: MessageFromContent) {
     });
 }
 
-async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
-    const sel = window.getSelection();
-    if (sel === null) {
-        return;
+// Get selection with 100ms interval polling with max 5 retries.
+// This is necessary since selection is cleared while popup window is open.
+// After the popup closes, the selection is restored when the page gains focus.
+//
+// The exact sequence of page action is:
+//
+//   1. User selects tweet text
+//   2. User clicks page action (icon in toolbar)
+//   3. Popup opens and selection is cleared temporarily
+//   4. User clicks 'Unlink' button
+//   5. Popup script sends message to background script
+//   6. Background script returns response immediately and sends message to content script
+//   7. Popup script receives the response and close its window.
+//   8. Selection of tweet text is restored since popup closed. This happens asynchronously against
+//      background script and content script. So it's not clear when selection is restored
+//   9. Content script gets the restored selection by this polling and retries
+async function getSelectionWithRetry(): Promise<[Selection | null, string]> {
+    for (let i = 0; i < 5; i++) {
+        const sel = window.getSelection();
+        if (sel !== null) {
+            const text = sel.toString();
+            if (text !== '') {
+                return [sel, text];
+            }
+        }
+        await afterMilliseconds(100);
     }
+    return [null, ''];
+}
 
-    const text = sel.toString();
-    if (text === '') {
+async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
+    const [sel, text] = await getSelectionWithRetry();
+    if (sel === null || text === '') {
         // No text is selected
         alert('Please select text which you want to convert in Tweet form');
         return;
@@ -86,18 +115,16 @@ function handleError(err: Error) {
     // TODO: Use alert for user
 }
 
-chrome.runtime.onMessage.addListener((msg: Message, _, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg: Message) => {
     switch (msg.type) {
         case 'contextMenu':
             unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
-            return false;
+            return;
         case 'pageAction':
-            unlinkTextInSelection(msg.config)
-                .catch(handleError)
-                .then(sendResponse);
-            return true;
+            unlinkTextInSelection(msg.config).catch(handleError);
+            return;
         default:
             console.error('FATAL: Unexpected msg:', msg);
-            return false;
+            return;
     }
 });

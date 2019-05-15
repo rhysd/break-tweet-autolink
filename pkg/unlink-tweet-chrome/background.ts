@@ -86,17 +86,23 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
         case 'unlinkSelectedText': {
             chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
                 if (tabs.length === 0) {
+                    console.error('No active tab found');
                     return;
                 }
+
                 const tab = tabs[0];
                 if (tab.id === undefined) {
+                    console.error('Tab ID is not set to active tab:', tab);
                     return;
                 }
+
+                const tabId = tab.id;
                 const req: Message = {
                     type: 'pageAction',
                     config: msg.config,
                 };
-                chrome.tabs.sendMessage(tab.id, req, sendResponse);
+                sendResponse();
+                chrome.tabs.sendMessage(tabId, req);
             });
             break;
         }

@@ -19,9 +19,12 @@ unlink.addEventListener('click', () => {
         urlNoScheme: urlNoScheme.checked,
         urlWithScheme: urlWithScheme.checked,
     };
+
     const msg: MessageFromPopup = {
         type: 'unlinkSelectedText',
         config,
     };
+
+    // Note: Background script immediately returns a response after receiving this message.
     chrome.runtime.sendMessage(msg, () => window.close());
 });
