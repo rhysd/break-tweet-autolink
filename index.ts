@@ -8,6 +8,7 @@ interface ConfigAll {
     mention: boolean;
     list: boolean;
 }
+export type TweetAutoLinkBreakerConfigAll = ConfigAll;
 
 export type TweetAutoLinkBreakerConfig = { [K in keyof ConfigAll]?: ConfigAll[K] };
 
