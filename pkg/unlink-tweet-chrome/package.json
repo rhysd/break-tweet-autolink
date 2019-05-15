@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
   "dependencies": {
-    "break-tweet-autolink": "^0.2.2",
+    "break-tweet-autolink": "^0.2.3",
     "bulma": "^0.7.4"
   },
   "devDependencies": {
