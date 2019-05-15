@@ -1,15 +1,6 @@
 import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
 import { Message, MessageFromContent } from './message';
 
-const DEFAULT_CONFIG = {
-    hashtag: true,
-    urlNoScheme: true,
-    urlWithScheme: false,
-    cashtag: true,
-    mention: true,
-    list: true,
-};
-
 function command(name: string, arg: string | undefined = undefined) {
     if (!document.execCommand(name, false, arg)) {
         throw Error(`Command '${name}' failed with argument ${arg}`);
@@ -20,14 +11,14 @@ function afterMilliseconds(ms: number) {
     return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
-function unlink(text: string, cfg: TweetAutoLinkBreakerConfig = DEFAULT_CONFIG): string {
+function unlink(text: string, cfg: TweetAutoLinkBreakerConfig): string {
     // TODO: TweetAutoLinkBreakerConfig should be configurable
     const b = new TweetAutoLinkBreaker(cfg);
     return b.breakAutoLinks(text);
 }
 
-async function unlinkSelectedText(text: string, clipboard: string): Promise<boolean> {
-    const unlinked = unlink(text);
+async function unlinkSelectedText(text: string, clipboard: string, cfg: TweetAutoLinkBreakerConfig): Promise<boolean> {
+    const unlinked = unlink(text, cfg);
     if (unlinked === '') {
         return false;
     }
@@ -118,7 +109,7 @@ function handleError(err: Error) {
 chrome.runtime.onMessage.addListener((msg: Message) => {
     switch (msg.type) {
         case 'contextMenu':
-            unlinkSelectedText(msg.selected, msg.clipboard).catch(handleError);
+            unlinkSelectedText(msg.selected, msg.clipboard, msg.config).catch(handleError);
             return;
         case 'pageAction':
             unlinkTextInSelection(msg.config).catch(handleError);

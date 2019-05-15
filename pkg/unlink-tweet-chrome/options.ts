@@ -1,17 +1,6 @@
 import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
 
-// prettier-ignore
-const OPTION_NAMES = [
-    'mention',
-    'list',
-    'hashtag',
-    'cashtag',
-    'urlNoScheme',
-    'urlWithScheme',
-] as const;
-
-// Note: Don't use `keyof ConfigAll` to check OPTION_NAMES has proper values
-type OptionName = typeof OPTION_NAMES[number];
+type OptionName = keyof ConfigAll;
 
 const saveButton = document.getElementById('save-btn')! as HTMLButtonElement;
 const resetButton = document.getElementById('reset-btn')! as HTMLButtonElement;
@@ -25,6 +14,7 @@ const DEFAULT_OPTIONS: ConfigAll = {
     'urlNoScheme': true,
     'urlWithScheme': false,
 };
+const OPTION_NAMES = Object.keys(DEFAULT_OPTIONS) as OptionName[];
 
 function optionElement(name: OptionName): HTMLInputElement {
     const elem = document.getElementById(`option-${name}`);
@@ -54,15 +44,9 @@ function saveOptionsToStorage(opts: ConfigAll) {
     return new Promise<void>(resolve => chrome.storage.sync.set(opts, resolve));
 }
 
-// Note: The loaded object may be empty when the value is not saved yet
-function loadOptionsFromStrage() {
-    return new Promise<ConfigAll>(resolve => {
-        chrome.storage.sync.get(OPTION_NAMES, (opts: ConfigAll) => resolve(opts));
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    loadOptionsFromStrage().then(opts => {
+    chrome.storage.sync.get(OPTION_NAMES, (opts: ConfigAll) => {
+        // Note: The loaded object may be empty when the value is not saved yet
         if (Object.keys(opts).length > 0) {
             setOptionsToElems(opts);
         } else {

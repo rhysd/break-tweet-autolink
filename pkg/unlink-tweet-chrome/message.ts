@@ -1,14 +1,15 @@
-import * as t from 'break-tweet-autolink';
+import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
 
 export type Message =
     | {
           type: 'contextMenu';
           selected: string;
           clipboard: string;
+          config: ConfigAll;
       }
     | {
           type: 'pageAction';
-          config: t.TweetAutoLinkBreakerConfig;
+          config: ConfigAll;
       }
     | {
           type: 'responseCopy';
@@ -21,5 +22,5 @@ export type MessageFromContent = {
 
 export type MessageFromPopup = {
     type: 'unlinkSelectedText';
-    config: t.TweetAutoLinkBreakerConfig;
+    config: ConfigAll;
 };
