@@ -73,11 +73,15 @@ async function getSelectionWithRetry(): Promise<[Selection | null, string]> {
     return [null, ''];
 }
 
+function alert(msg: string) {
+    window.alert('Unlink Tweet:\n' + msg);
+}
+
 async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
     const [sel, text] = await getSelectionWithRetry();
     if (sel === null || text === '') {
         // No text is selected
-        alert('Please select text which you want to convert in Tweet form');
+        alert('Please select text to unlink in Tweet form');
         return;
     }
 
@@ -102,7 +106,7 @@ async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
 
 function handleError(err: Error) {
     console.error('Error:', err.message, err);
-    // TODO: Use alert for user
+    alert('FATAL ERROR: ' + err.message);
 }
 
 chrome.runtime.onMessage.addListener((msg: Message) => {
