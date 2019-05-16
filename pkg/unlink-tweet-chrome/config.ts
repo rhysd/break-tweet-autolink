@@ -44,3 +44,19 @@ export function getConfigFromElems(id: ElemIdGetFunc): ConfigAll {
     }
     return ret;
 }
+
+export function loadConfig() {
+    return new Promise<ConfigAll>(resolve => {
+        chrome.storage.sync.get(CONFIG_NAMES, (c: ConfigAll | {}) => {
+            if (isEmptyObject(c)) {
+                resolve(DEFAULT_CONFIG);
+            } else {
+                resolve(c);
+            }
+        });
+    });
+}
+
+export function saveConfig(c: ConfigAll) {
+    return new Promise<void>(resolve => chrome.storage.sync.set(c, resolve));
+}

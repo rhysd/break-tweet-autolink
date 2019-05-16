@@ -1,28 +1,5 @@
-import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
 import { Message, MessageFromContent, MessageFromPopup } from './message';
-
-// prettier-ignore
-const DEFAULT_CONFIG: ConfigAll = {
-    'mention': true,
-    'list': true,
-    'hashtag': true,
-    'cashtag': true,
-    'urlNoScheme': true,
-    'urlWithScheme': false,
-}
-const CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as Array<keyof ConfigAll>;
-
-async function readConfig() {
-    return new Promise<ConfigAll>(resolve => {
-        chrome.storage.sync.get(CONFIG_NAMES, (opts: ConfigAll) => {
-            if (Object.keys(opts).length > 0) {
-                resolve(opts);
-            } else {
-                resolve(DEFAULT_CONFIG);
-            }
-        });
-    });
-}
+import { loadConfig } from './config.js';
 
 // Workaround since navigator.clipboard.readText() in content script still requires user permission
 // with a permission dialog even if 'clipboardRead' permission is set. This may be a bug of Chrome.
@@ -85,7 +62,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         return;
     }
     const tabId = tab.id;
-    Promise.all([readClipboardText(), readConfig()])
+    Promise.all([readClipboardText(), loadConfig()])
         .then(([text, config]) => {
             const msg: Message = {
                 type: 'contextMenu',

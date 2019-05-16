@@ -12,9 +12,7 @@
     "declarativeContent"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "page": "background.html",
     "persistent": false
   },
   "content_scripts": [

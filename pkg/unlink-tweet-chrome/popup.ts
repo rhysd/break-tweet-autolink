@@ -1,6 +1,5 @@
-import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
 import { MessageFromPopup } from './message';
-import { setConfigToElems, ConfigName, getConfigFromElems, CONFIG_NAMES } from './config.js';
+import { setConfigToElems, ConfigName, getConfigFromElems, loadConfig } from './config.js';
 
 function getId(name: ConfigName) {
     return `cfg-${name}`;
@@ -17,7 +16,5 @@ document.getElementById('unlink-btn')!.addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    chrome.storage.sync.get(CONFIG_NAMES, (opts: ConfigAll) => {
-        setConfigToElems(opts, getId);
-    });
+    loadConfig().then(c => setConfigToElems(c, getId));
 });
