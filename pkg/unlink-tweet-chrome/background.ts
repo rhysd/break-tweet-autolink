@@ -76,8 +76,6 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
-// TODO: Send TweetAutoLinkBreakerConfig and use it for unlinking
-
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId !== 'doTweetUnlink') {
         return;

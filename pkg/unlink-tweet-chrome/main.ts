@@ -12,7 +12,6 @@ function afterMilliseconds(ms: number) {
 }
 
 function unlink(text: string, cfg: TweetAutoLinkBreakerConfig): string {
-    // TODO: TweetAutoLinkBreakerConfig should be configurable
     const b = new TweetAutoLinkBreaker(cfg);
     return b.breakAutoLinks(text);
 }
