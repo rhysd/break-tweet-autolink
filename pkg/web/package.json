@@ -1,0 +1,37 @@
+{
+  "name": "unlink-tweet-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Visit https://rhysd.github.io/break-tweet-autolink",
+  "main": "dist/main.js",
+  "scripts": {
+    "build:tsc": "../../node_modules/.bin/tsc -p .",
+    "build:parcel": "parcel build -o index.js -d dist/ ./dist/main.js",
+    "build": "../../node_modules/.bin/npm-run-all build:tsc build:parcel",
+    "server": "http-server -p 1234 ./dist",
+    "watch:tsc": "../../node_modules/.bin/tsc -p . --watch",
+    "watch:parcel": "parcel watch --no-hmr -o index.js -d dist/ ./dist/main.js",
+    "watch": "../../node_modules/.bin/npm-run-all -p watch:tsc watch:parcel server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cp node_modules/bulma/css/bulma.min.css dist/css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysd/break-tweet-autolink.git"
+  },
+  "author": "rhysd <https://rhysd.github.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhysd/break-tweet-autolink/issues"
+  },
+  "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
+  "dependencies": {
+    "break-tweet-autolink": "^0.2.3",
+    "bulma": "^0.7.4"
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1",
+    "parcel-bundler": "^1.12.3",
+    "typescript": "^3.4.5"
+  }
+}

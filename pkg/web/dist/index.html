@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bulma.min.css" />
+    <title>Break autolinks in tweet</title>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+      <h2 class="subtitle">What to unlink</h2>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>
+              <input id="option-mention" type="checkbox">
+            </th>
+            <th>Mention</th>
+            <th>
+              <code>@name</code>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input id="option-list" type="checkbox">
+            </th>
+            <th>List</th>
+            <th>
+              <code>@name/list</code>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input id="option-hashtag" type="checkbox">
+            </th>
+            <th>Hashtag</th>
+            <th>
+              <code>#hashtag</code>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input id="option-cashtag" type="checkbox" checked>
+            </th>
+            <th>Cashtag</th>
+            <th>
+              <code>$cashtag</code>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input id="option-urlNoScheme" type="checkbox" checked>
+            </th>
+            <th>Link</th>
+            <th>
+              <code>example.com</code>
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input id="option-urlWithScheme" type="checkbox">
+            </th>
+            <th>URL</th>
+            <th>
+              <code>https://example.com</code>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <a id="unlink-btn" class="button is-info">Unlink Clipboard Text</a>
+      </div>
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
