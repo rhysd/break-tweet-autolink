@@ -1,1 +1,4 @@
-/dist
+/tmp
+/pkg
+package-lock.json
+node_modules
