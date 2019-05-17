@@ -117,6 +117,22 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
             'hi @name and list @foo/list, #this URL is awesome example.com https://example.com please see at $GOOG',
             { hashtag: false, urlNoScheme: false, urlWithScheme: false, cashtag: false, mention: false, list: false },
         ],
+    'all entities with newlines':
+        [
+            `hi @name and list
+             @foo/list
+             , #this URL is awesome
+             example.com https://example.com
+             please see at $GOOG
+             `,
+            `hi @\u200Bname and list
+             @\u200Bfoo/list
+             , #\u200Bthis URL is awesome
+             example.\u200Bcom https://example.\u200Bcom
+             please see at $\u200BGOOG
+             `,
+            { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true },
+        ],
 };
 
 const entities: ReadonlyArray<[keyof TweetAutoLinkBreakerConfig, string, string]> = [
