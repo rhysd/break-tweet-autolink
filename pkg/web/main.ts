@@ -1,6 +1,10 @@
 import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfigAll as ConfigAll, DEFAULT_CONFIG } from 'break-tweet-autolink';
 
 const CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as Array<keyof ConfigAll>;
+const CLIPBOARD_UNSUPPORTED =
+    navigator.clipboard === undefined ||
+    navigator.clipboard.readText === undefined ||
+    navigator.clipboard.writeText === undefined;
 
 class CheckMark {
     timer: number | null;
@@ -39,6 +43,7 @@ class CheckMark {
 }
 
 const checkMark = new CheckMark();
+const unlinkButton = document.getElementById('unlink-btn')!;
 
 function readOptions(): ConfigAll {
     const ret: any = {};
@@ -49,27 +54,43 @@ function readOptions(): ConfigAll {
     return ret;
 }
 
-document.getElementById('unlink-btn')!.addEventListener('click', () => {
-    if (navigator.clipboard === undefined) {
-        alert('This browser does not support clipboard API');
-        return;
-    }
+if (CLIPBOARD_UNSUPPORTED) {
+    const fallbackContainer = document.getElementById('fallback-textarea')!;
+    const textarea = document.createElement('textarea');
+    textarea.className = 'textarea';
+    textarea.placeholder = 'Paste tweet here';
+    textarea.style.marginBottom = '12px';
+    fallbackContainer.appendChild(textarea);
 
-    const breaker = new TweetAutoLinkBreaker(readOptions());
+    unlinkButton.innerText = 'Unlink';
 
-    navigator.clipboard
-        .readText()
-        .then(text => {
-            const unlinked = breaker.breakAutoLinks(text);
-            if (text === unlinked) {
-                return;
-            }
-            return navigator.clipboard.writeText(unlinked);
-        })
-        .then(() => {
-            checkMark.bounceIn();
-        })
-        .catch(err => {
-            alert(err.message);
-        });
-});
+    unlinkButton.addEventListener('click', () => {
+        const breaker = new TweetAutoLinkBreaker(readOptions());
+        const text = textarea.value;
+        const unlinked = breaker.breakAutoLinks(text);
+        if (text !== unlinked) {
+            textarea.value = unlinked;
+        }
+        checkMark.bounceIn();
+    });
+} else {
+    unlinkButton.addEventListener('click', () => {
+        const breaker = new TweetAutoLinkBreaker(readOptions());
+
+        navigator.clipboard
+            .readText()
+            .then(text => {
+                const unlinked = breaker.breakAutoLinks(text);
+                if (text === unlinked) {
+                    return;
+                }
+                return navigator.clipboard.writeText(unlinked);
+            })
+            .then(() => {
+                checkMark.bounceIn();
+            })
+            .catch(err => {
+                alert(err.message);
+            });
+    });
+}
