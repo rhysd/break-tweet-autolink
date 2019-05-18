@@ -133,6 +133,12 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
              `,
             { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true },
         ],
+    'all entities with changing escape character':
+        [
+            'hi @name and list @foo/list, #this URL is awesome example.com https://example.com please see at $GOOG',
+            'hi @\\name and list @\\foo/list, #\\this URL is awesome example.\\com https://example.\\com please see at $\\GOOG',
+            { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true, char: '\\' },
+        ],
 };
 
 const entities: ReadonlyArray<[keyof TweetAutoLinkBreakerConfig, string, string]> = [

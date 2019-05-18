@@ -7,6 +7,7 @@ interface ConfigAll {
     cashtag: boolean;
     mention: boolean;
     list: boolean;
+    char?: string;
 }
 export type TweetAutoLinkBreakerConfigAll = ConfigAll;
 
@@ -20,13 +21,16 @@ export const DEFAULT_CONFIG: ConfigAll = {
     mention: false,
     list: false,
 };
+export const DEFAULT_ESCAPE_CHAR = '\u200B';
 const RE_DOT = /\./g;
 
 export class TweetAutoLinkBreaker {
     private readonly config: ConfigAll;
+    private readonly char: string;
 
     constructor(cfg?: TweetAutoLinkBreakerConfig | null) {
         this.config = { ...DEFAULT_CONFIG, ...(cfg || {}) };
+        this.char = this.config.char || DEFAULT_ESCAPE_CHAR;
     }
 
     breakAutoLinks(text: string): string {
@@ -41,30 +45,30 @@ export class TweetAutoLinkBreaker {
 
             if (this.config.hashtag && 'hashtag' in entity) {
                 // Hashtag
-                replaced = '#\u200B' + entity.hashtag;
+                replaced = '#' + this.char + entity.hashtag;
             } else if (
                 this.config.urlWithScheme &&
                 'url' in entity &&
                 (entity.url.startsWith('https://') || entity.url.startsWith('http://'))
             ) {
                 // URL with scheme
-                replaced = entity.url.replace(RE_DOT, '.\u200B');
+                replaced = entity.url.replace(RE_DOT, '.' + this.char);
             } else if (
                 this.config.urlNoScheme &&
                 'url' in entity &&
                 (!entity.url.startsWith('https://') && !entity.url.startsWith('http://'))
             ) {
                 // URL without scheme
-                replaced = entity.url.replace(RE_DOT, '.\u200B');
+                replaced = entity.url.replace(RE_DOT, '.' + this.char);
             } else if (this.config.cashtag && 'cashtag' in entity) {
                 // Cashtag
-                replaced = '$\u200B' + entity.cashtag;
+                replaced = '$' + this.char + entity.cashtag;
             } else if (this.config.list && 'listSlug' in entity && entity.listSlug.length > 0) {
                 // Mention with list
-                replaced = `@\u200B${entity.screenName}${entity.listSlug}`;
+                replaced = `@${this.char}${entity.screenName}${entity.listSlug}`;
             } else if (this.config.mention && 'screenName' in entity) {
                 // Mention
-                replaced = '@\u200B' + entity.screenName;
+                replaced = '@' + this.char + entity.screenName;
             } else {
                 // Ignore
                 const idx = entity.indices[0];
