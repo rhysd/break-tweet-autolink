@@ -38,7 +38,7 @@
     "@types/minimist": "^1.2.0"
   },
   "dependencies": {
-    "break-tweet-autolink": "^0.2.3",
+    "break-tweet-autolink": "^0.2.4",
     "camelize": "^1.0.0",
     "clipboardy": "^2.0.0",
     "minimist": "^1.2.0"

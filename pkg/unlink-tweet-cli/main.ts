@@ -35,6 +35,9 @@ OPTS:
 
 --cashtag,  --no-cashtag
 	Cashtags such as $FOO (default: true)
+
+--escape {string}
+	Escape character for breaking auto links (default: \\u200B)
 `);
     process.exit(0);
 }
@@ -62,7 +65,17 @@ function getConfig(opts: string[]): TweetAutoLinkBreakerConfig | null {
     if (opts.length === 0) {
         return null;
     }
-    return camelize(parseArgs(opts));
+
+    const parsed: any = camelize(parseArgs(opts));
+    if (parsed.escape !== undefined) {
+        parsed.char = parsed.escape;
+        delete parsed.escape;
+    }
+
+    // parseArgs leaves args not parsed in '_' key. And camelize() converts the key to ''.
+    delete parsed[''];
+
+    return parsed;
 }
 
 async function main() {
