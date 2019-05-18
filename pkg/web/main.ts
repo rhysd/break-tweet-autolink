@@ -1,4 +1,9 @@
-import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfigAll as ConfigAll, DEFAULT_CONFIG } from 'break-tweet-autolink';
+import {
+    TweetAutoLinkBreaker,
+    TweetAutoLinkBreakerConfigAll as ConfigAll,
+    TweetAutoLinkBreakerConfig,
+    DEFAULT_CONFIG,
+} from 'break-tweet-autolink';
 
 const CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as Array<keyof ConfigAll>;
 const CLIPBOARD_UNSUPPORTED =
@@ -46,12 +51,12 @@ const checkMark = new CheckMark();
 const unlinkButton = document.getElementById('unlink-btn')!;
 
 function readOptions(): ConfigAll {
-    const ret: any = {};
+    const ret: TweetAutoLinkBreakerConfig = {};
     for (const name of CONFIG_NAMES) {
         const e = document.getElementById(`option-${name}`)! as HTMLInputElement;
         ret[name] = e.checked;
     }
-    return ret;
+    return ret as ConfigAll;
 }
 
 if (CLIPBOARD_UNSUPPORTED) {

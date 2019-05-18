@@ -1,4 +1,4 @@
-import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
+import { TweetAutoLinkBreakerConfigAll as ConfigAll, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
 
 export type ConfigName = keyof ConfigAll;
 export type ElemIdGetFunc = (n: ConfigName) => string;
@@ -31,18 +31,21 @@ export function setConfigToElems(config: ConfigAll | {}, id: ElemIdGetFunc) {
     const c: ConfigAll = isEmptyObject(config) ? DEFAULT_CONFIG : config;
 
     for (const k of Object.keys(config)) {
-        getElemForConfig(k as ConfigName, id).checked = c[k as ConfigName];
+        const v = c[k as ConfigName];
+        if (typeof v === 'boolean') {
+            getElemForConfig(k as ConfigName, id).checked = v;
+        }
     }
 }
 
 export function getConfigFromElems(id: ElemIdGetFunc): ConfigAll {
     // Note: es2019.object.d.ts does not work with string literal types as keys of object.
     // The return type of Object.fromEntries() falls back to {[k: string]: T; [k: number]: T}.
-    const ret = {} as any;
+    const ret = {} as TweetAutoLinkBreakerConfig;
     for (const name of CONFIG_NAMES) {
         ret[name] = getElemForConfig(name, id).checked;
     }
-    return ret;
+    return ret as ConfigAll;
 }
 
 export function loadConfig() {
