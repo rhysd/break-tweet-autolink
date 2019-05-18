@@ -1,6 +1,6 @@
 {
   "name": "Unlink Tweet",
-  "version": "0.1",
+  "version": "0.2.0",
   "description": "Break autolinks such as URLs in selected tweet text",
   "manifest_version": 2,
   "permissions": [

@@ -1,6 +1,6 @@
 {
   "name": "unlink-tweet-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI utility to break auto links in tweet text",
   "main": "index.js",
   "bin": {
@@ -38,7 +38,7 @@
     "@types/minimist": "^1.2.0"
   },
   "dependencies": {
-    "break-tweet-autolink": "^0.2.4",
+    "break-tweet-autolink": "^0.3.0",
     "camelize": "^1.0.0",
     "clipboardy": "^2.0.0",
     "minimist": "^1.2.0"

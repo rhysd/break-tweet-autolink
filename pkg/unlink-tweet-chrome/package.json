@@ -1,6 +1,6 @@
 {
   "name": "unlink-tweet-chrome",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Chrome extension to break auto links in tweet text",
   "main": "index.js",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
   "dependencies": {
-    "break-tweet-autolink": "^0.2.3",
+    "break-tweet-autolink": "^0.3.0",
     "bulma": "^0.7.4"
   },
   "devDependencies": {
