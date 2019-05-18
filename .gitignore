@@ -4,6 +4,5 @@ node_modules
 *.js
 *.js.map
 /*.d.ts
-/pkg/break-tweet-autolink-cli/*.d.ts
 /pkg/unlink-tweet-chrome/dist/css/bulma.min.css
 /pkg/web/dist/css/bulma.min.css
