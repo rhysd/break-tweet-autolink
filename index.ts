@@ -52,14 +52,14 @@ export class TweetAutoLinkBreaker {
                 (entity.url.startsWith('https://') || entity.url.startsWith('http://'))
             ) {
                 // URL with scheme
-                replaced = entity.url.replace(RE_DOT, '.' + this.char);
+                replaced = entity.url.replace(RE_DOT, this.char + '.');
             } else if (
                 this.config.urlNoScheme &&
                 'url' in entity &&
                 (!entity.url.startsWith('https://') && !entity.url.startsWith('http://'))
             ) {
                 // URL without scheme
-                replaced = entity.url.replace(RE_DOT, '.' + this.char);
+                replaced = entity.url.replace(RE_DOT, this.char + '.');
             } else if (this.config.cashtag && 'cashtag' in entity) {
                 // Cashtag
                 replaced = '$' + this.char + entity.cashtag;

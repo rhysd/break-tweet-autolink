@@ -1,6 +1,6 @@
 {
   "name": "break-tweet-autolink",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Break auto links in tweet text",
   "main": "index.js",
   "scripts": {

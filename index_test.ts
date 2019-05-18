@@ -42,15 +42,15 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
     'no hashtag':
         ['on #inuconf, how is going?', 'on #inuconf, how is going?', { hashtag: false }],
     'url without scheme':
-        ['visit foo.example.com and say hello', 'visit foo.\u200Bexample.\u200Bcom and say hello', { urlNoScheme: true }],
+        ['visit foo.example.com and say hello', 'visit foo\u200B.example\u200B.com and say hello', { urlNoScheme: true }],
     'url without scheme with path':
-        ['visit foo.example.com/bar.txt and say hello', 'visit foo.\u200Bexample.\u200Bcom/bar.\u200Btxt and say hello', { urlNoScheme: true }],
+        ['visit foo.example.com/bar.txt and say hello', 'visit foo\u200B.example\u200B.com/bar\u200B.txt and say hello', { urlNoScheme: true }],
     'url without scheme at top':
-        ['foo.example.com and say hello', 'foo.\u200Bexample.\u200Bcom and say hello', { urlNoScheme: true }],
+        ['foo.example.com and say hello', 'foo\u200B.example\u200B.com and say hello', { urlNoScheme: true }],
     'url without scheme at last':
-        ['visit foo.example.com', 'visit foo.\u200Bexample.\u200Bcom', { urlNoScheme: true }],
+        ['visit foo.example.com', 'visit foo\u200B.example\u200B.com', { urlNoScheme: true }],
     'only url without scheme':
-        ['foo.example.com', 'foo.\u200Bexample.\u200Bcom', { urlNoScheme: true }],
+        ['foo.example.com', 'foo\u200B.example\u200B.com', { urlNoScheme: true }],
     'no url without scheme':
         ['visit foo.example.com and say hello', 'visit foo.example.com and say hello', { urlNoScheme: false }],
     'no url with scheme with url without scheme config enabled':
@@ -58,29 +58,29 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
     'url with https scheme':
         [
             'visit https://foo.example.com and say hello',
-            'visit https://foo.\u200Bexample.\u200Bcom and say hello',
+            'visit https://foo\u200B.example\u200B.com and say hello',
             { urlWithScheme: true },
         ],
     'url with http scheme':
         [
             'visit http://foo.example.com and say hello',
-            'visit http://foo.\u200Bexample.\u200Bcom and say hello',
+            'visit http://foo\u200B.example\u200B.com and say hello',
             { urlWithScheme: true },
         ],
     'url with https scheme at top':
         [
             'https://foo.example.com and say hello',
-            'https://foo.\u200Bexample.\u200Bcom and say hello',
+            'https://foo\u200B.example\u200B.com and say hello',
             { urlWithScheme: true },
         ],
     'url with http scheme at last':
         [
             'visit http://foo.example.com',
-            'visit http://foo.\u200Bexample.\u200Bcom',
+            'visit http://foo\u200B.example\u200B.com',
             { urlWithScheme: true },
         ],
     'only url with https scheme':
-        ['https://foo.example.com', 'https://foo.\u200Bexample.\u200Bcom', { urlWithScheme: true }],
+        ['https://foo.example.com', 'https://foo\u200B.example\u200B.com', { urlWithScheme: true }],
     'no url with scheme':
         ['https://foo.example.com', 'https://foo.example.com', { urlWithScheme: false }],
     'no url without scheme with url with scheme config enabled':
@@ -108,7 +108,7 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
     'all entities':
         [
             'hi @name and list @foo/list, #this URL is awesome example.com https://example.com please see at $GOOG',
-            'hi @\u200Bname and list @\u200Bfoo/list, #\u200Bthis URL is awesome example.\u200Bcom https://example.\u200Bcom please see at $\u200BGOOG',
+            'hi @\u200Bname and list @\u200Bfoo/list, #\u200Bthis URL is awesome example\u200B.com https://example\u200B.com please see at $\u200BGOOG',
             { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true },
         ],
     'no entity with all are disabled':
@@ -128,7 +128,7 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
             `hi @\u200Bname and list
              @\u200Bfoo/list
              , #\u200Bthis URL is awesome
-             example.\u200Bcom https://example.\u200Bcom
+             example\u200B.com https://example\u200B.com
              please see at $\u200BGOOG
              `,
             { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true },
@@ -136,7 +136,7 @@ const tests: { [what: string]: [string, string, TweetAutoLinkBreakerConfig | nul
     'all entities with changing escape character':
         [
             'hi @name and list @foo/list, #this URL is awesome example.com https://example.com please see at $GOOG',
-            'hi @\\name and list @\\foo/list, #\\this URL is awesome example.\\com https://example.\\com please see at $\\GOOG',
+            'hi @\\name and list @\\foo/list, #\\this URL is awesome example\\.com https://example\\.com please see at $\\GOOG',
             { hashtag: true, urlNoScheme: true, urlWithScheme: true, cashtag: true, mention: true, list: true, char: '\\' },
         ],
 };
@@ -145,8 +145,8 @@ const entities: ReadonlyArray<[keyof TweetAutoLinkBreakerConfig, string, string]
     ['mention', '@name', '@\u200Bname'],
     ['list', '@foo/list', '@\u200Bfoo/list'],
     ['hashtag', '#hashtag', '#\u200Bhashtag'],
-    ['urlNoScheme', 'foo.bar.com/piyo.txt', 'foo.\u200Bbar.\u200Bcom/piyo.\u200Btxt'],
-    ['urlWithScheme', 'https://foo.bar.com/piyo.txt', 'https://foo.\u200Bbar.\u200Bcom/piyo.\u200Btxt'],
+    ['urlNoScheme', 'foo.bar.com/piyo.txt', 'foo\u200B.bar\u200B.com/piyo\u200B.txt'],
+    ['urlWithScheme', 'https://foo.bar.com/piyo.txt', 'https://foo\u200B.bar\u200B.com/piyo\u200B.txt'],
     ['cashtag', '$GOOG', '$\u200BGOOG'],
 ];
 
