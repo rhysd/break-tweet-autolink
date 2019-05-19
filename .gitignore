@@ -8,3 +8,4 @@ node_modules
 /pkg/web/dist/css/bulma.min.css
 *.crx
 *.pem
+*.zip

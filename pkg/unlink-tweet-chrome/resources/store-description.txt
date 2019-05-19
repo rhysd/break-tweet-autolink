@@ -1,0 +1,39 @@
+## Why?
+
+Did you experience various stuffs are linked unintentionally? For example,
+
+- method call such as 'receiver.foo()'
+- markdown file name such as 'README.md'
+- C's preprocessor macros such as '#include'
+- Ruby's instance variable '@foo' and/or global variables '$bar'
+
+If you experienced and felt it annoying, tools or library provided by this repository would help
+you.
+
+## Usage
+
+You can easily remove auto links in selected text at twitter.com or mobile.twitter.com. The easiest
+way is using a context menu item.
+
+1. Select your tweet text in a tweet form at twitter.com or mobile.twitter.com.
+2. Right click
+3. Choose 'Unlink Tweet Text' item
+
+It automatically update selected text with unlinked text.
+
+If you want to control what is unlinked, please select text in tweet form and click an extension icon at tool bar of Chrome. It shows a popup window with checkboxes and button. Please check what you want to unlink and click button.
+
+This feature is also provided as web site and CLI. Please try them if you prefer.
+
+- https://rhysd.github.io/unlink-tweet
+- https://www.npmjs.com/package/unlink-tweet-cli
+
+## Credit
+
+This extension is developed at GitHub repository. Please submit bug reports there.
+
+https://www.npmjs.com/package/break-tweet-autolink
+
+This extension is distributed under the MIT license.
+
+Copyright (c) 2019 rhysd
