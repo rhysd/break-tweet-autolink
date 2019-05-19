@@ -6,3 +6,5 @@ node_modules
 /*.d.ts
 /pkg/unlink-tweet-chrome/dist/css/bulma.min.css
 /pkg/web/dist/css/bulma.min.css
+*.crx
+*.pem
