@@ -13,11 +13,11 @@
   ],
   "icons": {
     "16": "icon/icon-16.png",
-    "19": "icon/icon-19.png",
     "32": "icon/icon-32.png",
-    "38": "icon/icon-38.png",
     "48": "icon/icon-48.png",
-    "128": "icon/icon-128.png"
+    "96": "icon/icon-96.png",
+    "128": "icon/icon-128.png",
+    "256": "icon/icon-256.png"
   },
   "background": {
     "page": "background.html",
