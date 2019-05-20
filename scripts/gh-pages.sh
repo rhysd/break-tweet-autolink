@@ -15,7 +15,7 @@ hash="$(git rev-parse HEAD)"
 
 cp -R ./pkg/web/dist ./tmp
 git checkout gh-pages
-cp -R ./tmp/* ./
+cp -r ./tmp/* ./
 git add .
 git commit -m "Imported from ${hash}"
 rm -rf ./tmp
