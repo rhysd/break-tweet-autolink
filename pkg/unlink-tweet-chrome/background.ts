@@ -1,6 +1,12 @@
 import { Message, MessageFromContent, MessageFromPopup } from './message';
 import { loadConfig } from './config.js';
 
+function command(name: string, arg: string | undefined = undefined) {
+    if (!document.execCommand(name, false, arg)) {
+        throw Error(`Command '${name}' failed with argument ${arg}`);
+    }
+}
+
 // Workaround since navigator.clipboard.readText() in content script still requires user permission
 // with a permission dialog even if 'clipboardRead' permission is set. This may be a bug of Chrome.
 async function readClipboardText() {
@@ -12,8 +18,7 @@ async function readClipboardText() {
         });
         document.body.appendChild(textarea);
         textarea.focus();
-        // TODO: Check result
-        document.execCommand('paste');
+        command('paste');
     });
 }
 
@@ -22,8 +27,7 @@ function writeClipboardText(text: string) {
     textarea.textContent = text;
     document.body.appendChild(textarea);
     textarea.select();
-    // TODO: Check result
-    document.execCommand('copy');
+    command('copy');
     textarea.blur();
     document.body.removeChild(textarea);
 }
