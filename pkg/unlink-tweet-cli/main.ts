@@ -9,9 +9,10 @@ if (process.argv.length === 3 && (process.argv[2] === '--help' || process.argv[2
 
 This is a CLI utility to break auto links in Twitter text. <ARGS> are text you
 want to convert. If multiple arguments are given, they are concatenated with
-' '. If no argument is given, text is retrieved from your system clipboard.
+' '. If no argument is given, text is retrieved from STDIN.
 
-By default, only URLs with no scheme and cashtags are unlinked.
+It outputs unlinked text to STDOUT. By default, only URLs with no scheme and
+cashtags are unlinked.
 
 If you want to add some options, '--' argument must be followed after the last
 option even if no argument is specified.
@@ -38,8 +39,17 @@ OPTS:
 
 --escape {string}
 	Escape character for breaking auto links (default: \\u200B)
+
+-c, --clipboard
+	Read text from STDIN instead of clipboard ignoring <ARGS>.
+	Note: You need to put -- at last to specify options. It would look like
+	\`unlink-tweet --clipboard --\`.
 `);
     process.exit(0);
+}
+
+interface IO {
+    clipboardIn: boolean;
 }
 
 function getOptsAndArgs() {
@@ -53,17 +63,28 @@ function getOptsAndArgs() {
     }
 }
 
-async function getText(args: string[]) {
-    if (args.length > 0) {
-        return args.join(' ');
-    } else {
+async function getText(args: string[], io: IO) {
+    if (io.clipboardIn) {
         return await clipboardy.read();
     }
+
+    if (args.length > 0) {
+        return args.join(' ');
+    }
+
+    let text = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', chunk => {
+        text += chunk;
+    });
+    return await new Promise<string>(resolve => {
+        process.stdin.on('end', () => resolve(text));
+    });
 }
 
-function getConfig(opts: string[]): TweetAutoLinkBreakerConfig | null {
+function getConfig(opts: string[]): [TweetAutoLinkBreakerConfig | null, IO] {
     if (opts.length === 0) {
-        return null;
+        return [null, { clipboardIn: false }];
     }
 
     const parsed: any = camelize(parseArgs(opts));
@@ -72,16 +93,24 @@ function getConfig(opts: string[]): TweetAutoLinkBreakerConfig | null {
         delete parsed.escape;
     }
 
+    let clipboardIn = false;
+    if (parsed.c !== undefined || parsed.clipboard !== undefined) {
+        clipboardIn = !!(parsed.c || parsed.clipboard);
+        delete parsed.c;
+        delete parsed.clipboard;
+    }
+
     // parseArgs leaves args not parsed in '_' key. And camelize() converts the key to ''.
     delete parsed[''];
 
-    return parsed;
+    return [parsed, { clipboardIn }];
 }
 
 async function main() {
     const [opts, args] = getOptsAndArgs();
-    const input = await getText(args);
-    const breaker = new TweetAutoLinkBreaker(getConfig(opts));
+    const [cfg, io] = getConfig(opts);
+    const input = await getText(args, io);
+    const breaker = new TweetAutoLinkBreaker(cfg);
     const output = breaker.breakAutoLinks(input);
     process.stdout.write(output);
 }
