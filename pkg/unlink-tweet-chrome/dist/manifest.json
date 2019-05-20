@@ -23,17 +23,7 @@
     "page": "background.html",
     "persistent": false
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://mobile.twitter.com/*",
-        "https://twitter.com/*"
-      ],
-      "js": [
-        "content_script.js"
-      ]
-    }
-  ],
+  "content_scripts": [],
   "page_action": {
     "default_popup": "popup.html",
     "default_icon": {

@@ -28,6 +28,26 @@ function writeClipboardText(text: string) {
     document.body.removeChild(textarea);
 }
 
+async function executeContentScript() {
+    // Note: Check `window.unlinkTweetWasLoaded` to load content script only once.
+    // Content script is not loaded until 'Unlink Tweet' feature is triggered to
+    // reduce overhead.
+    return new Promise(resolve => {
+        chrome.tabs.executeScript(
+            {
+                code: 'window.unlinkTweetWasLoaded',
+            },
+            ([ret]: [null | boolean]) => {
+                if (ret) {
+                    resolve();
+                    return;
+                }
+                chrome.tabs.executeScript({ file: 'content_script.js' }, resolve);
+            },
+        );
+    });
+}
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: 'doTweetUnlink',
@@ -62,8 +82,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         return;
     }
     const tabId = tab.id;
-    Promise.all([readClipboardText(), loadConfig()])
-        .then(([text, config]) => {
+    Promise.all([executeContentScript(), readClipboardText(), loadConfig()])
+        .then(([_, text, config]) => {
             const msg: Message = {
                 type: 'contextMenu',
                 selected: info.selectionText || '',
@@ -84,25 +104,27 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
             break;
         }
         case 'unlinkSelectedText': {
-            chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-                if (tabs.length === 0) {
-                    console.error('No active tab found');
-                    return;
-                }
+            executeContentScript().then(() => {
+                chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+                    if (tabs.length === 0) {
+                        console.error('No active tab found');
+                        return;
+                    }
 
-                const tab = tabs[0];
-                if (tab.id === undefined) {
-                    console.error('Tab ID is not set to active tab:', tab);
-                    return;
-                }
+                    const tab = tabs[0];
+                    if (tab.id === undefined) {
+                        console.error('Tab ID is not set to active tab:', tab);
+                        return;
+                    }
 
-                const tabId = tab.id;
-                const req: Message = {
-                    type: 'pageAction',
-                    config: msg.config,
-                };
-                sendResponse();
-                chrome.tabs.sendMessage(tabId, req);
+                    const tabId = tab.id;
+                    const req: Message = {
+                        type: 'pageAction',
+                        config: msg.config,
+                    };
+                    sendResponse();
+                    chrome.tabs.sendMessage(tabId, req);
+                });
             });
             break;
         }

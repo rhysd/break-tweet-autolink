@@ -122,3 +122,7 @@ chrome.runtime.onMessage.addListener((msg: Message) => {
             return;
     }
 });
+
+// Note: Set flag to inject this content script only once programmatically from background script.
+// Content script is not loaded until 'Unlink Tweet' feature is triggered to reduce overhead.
+(window as any).unlinkTweetWasLoaded = true;
