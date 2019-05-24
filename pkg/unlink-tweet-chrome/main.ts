@@ -60,8 +60,9 @@ function sendMessage(msg: MessageFromContent) {
 //      background script and content script. So it's not clear when selection is restored
 //   9. Content script gets the restored selection by this polling and retries
 async function getSelectionWithRetry(): Promise<[Selection | null, string]> {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 2; i++) {
         const sel = window.getSelection();
+        console.log(sel, sel && sel.toString());
         if (sel !== null) {
             const text = sel.toString();
             if (text !== '') {
@@ -73,15 +74,54 @@ async function getSelectionWithRetry(): Promise<[Selection | null, string]> {
     return [null, ''];
 }
 
+// Note: This function only supports new tweet form built on draft.js
+// because old tweet form (RichEditor) does not work properly with execCommand('selectAll')
+function getEditorElement(): HTMLElement | null {
+    const editors: NodeListOf<HTMLElement> = document.querySelectorAll('.DraftEditor-root');
+    if (editors.length === 0) {
+        return null;
+    }
+    if (editors.length === 1) {
+        return editors[0];
+    }
+
+    // If multiple editors are shown for chained tweets, prefer the focused editor
+    const active = document.activeElement;
+    for (const editor of editors) {
+        if (editor.contains(active)) {
+            return editor;
+        }
+    }
+
+    // Fallback
+    return editors[editors.length - 1];
+}
+
+async function getSelectionWithSelectAllFallback(): Promise<[Selection | null, string]> {
+    const [sel, text] = await getSelectionWithRetry();
+    if (sel !== null && text !== '') {
+        return [sel, text];
+    }
+
+    const editor = getEditorElement();
+    if (editor === null) {
+        return [null, ''];
+    }
+
+    editor.click();
+    command('selectAll');
+    return getSelectionWithRetry();
+}
+
 function alert(msg: string) {
     window.alert('Unlink Tweet:\n' + msg);
 }
 
 async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
-    const [sel, text] = await getSelectionWithRetry();
+    const [sel, text] = await getSelectionWithSelectAllFallback();
     if (sel === null || text === '') {
         // No text is selected
-        alert('Please select text to unlink in Tweet form');
+        alert('Could not find text to unlink. Please select text in Tweet form');
         return;
     }
 

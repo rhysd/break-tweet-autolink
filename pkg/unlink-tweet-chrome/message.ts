@@ -21,6 +21,6 @@ export type MessageFromContent = {
 };
 
 export type MessageFromPopup = {
-    type: 'unlinkSelectedText';
+    type: 'unlinkTweet';
     config: ConfigAll;
 };

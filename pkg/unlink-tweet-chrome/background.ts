@@ -107,7 +107,7 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
             sendResponse(res);
             break;
         }
-        case 'unlinkSelectedText': {
+        case 'unlinkTweet': {
             executeContentScript().then(() => {
                 chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
                     if (tabs.length === 0) {

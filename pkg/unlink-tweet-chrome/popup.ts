@@ -7,7 +7,7 @@ function getId(name: ConfigName) {
 
 document.getElementById('unlink-btn')!.addEventListener('click', () => {
     const msg: MessageFromPopup = {
-        type: 'unlinkSelectedText',
+        type: 'unlinkTweet',
         config: getConfigFromElems(getId),
     };
 
