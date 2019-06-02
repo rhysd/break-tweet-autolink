@@ -21,7 +21,7 @@ way is using a context menu item.
 
 It automatically update selected text with unlinked text.
 
-If you want to control what is unlinked, please select text in tweet form and click an extension icon at tool bar of Chrome. It shows a popup window with checkboxes and button. Please check what you want to unlink and click button.
+If you want to control what is unlinked, please click an extension icon at tool bar of Chrome when tweet form is shown. It shows a popup window with checkboxes and button. Please check what you want to unlink and click button. For technical reason, please select tweet text on https://twitter.com.
 
 This feature is also provided as web site and CLI. Please try them if you prefer.
 
