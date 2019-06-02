@@ -32,7 +32,7 @@ you.
 As the easiest way to access the feature provided by this repository, small web app is hosted on
 [GitHub pages][web].
 
-![Screenshot](TODO)
+![Screenshot for website](https://github.com/rhysd/ss/blob/master/break-tweet-autolink/web.gif)
 
 1. Cut your tweet to clipboard at twitter.com or mobile.twitter.com
 2. Visit https://rhysd.github.io/unlink-tweet
@@ -51,7 +51,7 @@ This site is implemented [here](./pkg/web).
 
 If you use the feature frequently, this repository offers [a Chrome Extension][chrome].
 
-![Screenshot](TODO)
+![Screenshot for Chrome extension](https://github.com/rhysd/ss/blob/master/break-tweet-autolink/chrome.gif?raw=true)
 
 You can easily remove auto links in selected text at twitter.com or mobile.twitter.com. The easiest
 way is using a context menu item.
@@ -138,7 +138,7 @@ Library and all tools are distributed under [the MIT License](./LICENSE.txt).
 
 [lib-npm]: https://www.npmjs.com/package/break-tweet-autolink
 [cli-npm]: https://www.npmjs.com/package/unlink-tweet-cli
-[chrome]: https://TODO
+[chrome]: https://chrome.google.com/webstore/detail/unlink-tweet/fedknfiiihfjmacchidafeljjdhgjfce?hl=ja
 [web]: https://rhysd.github.io/unlink-tweet
 [npx]: https://blog.npmjs.org/post/162869356040/introducing-npx-an-npm-package-runner
 [ts]: https://www.typescriptlang.org/
