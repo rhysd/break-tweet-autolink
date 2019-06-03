@@ -5,7 +5,7 @@ This repository provides a library and tools to remove auto links in tweet text.
 
 - Library: [break-tweet-autolink][lib-npm]
 - Tools:
-  - GitHub pages: https://rhysd.github.io/unlink-tweet
+  - GitHub pages: <https://rhysd.github.io/break-tweet-autolink/>
   - Chrome Extension: [Unlink Tweet][chrome]
   - CLI: [unlink-tweet-cli][cli-npm]
 
