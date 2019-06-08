@@ -21,6 +21,14 @@ export const DEFAULT_CONFIG: ConfigAll = {
     mention: false,
     list: false,
 };
+export const UNLINK_ALL_CONFIG: ConfigAll = {
+    hashtag: true,
+    urlNoScheme: true,
+    urlWithScheme: true,
+    cashtag: true,
+    mention: true,
+    list: true,
+};
 export const DEFAULT_ESCAPE_CHAR = '\u200B';
 const RE_DOT = /\./g;
 
