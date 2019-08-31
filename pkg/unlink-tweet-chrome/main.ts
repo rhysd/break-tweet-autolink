@@ -62,7 +62,6 @@ function sendMessage(msg: MessageFromContent) {
 async function getSelectionWithRetry(): Promise<[Selection | null, string]> {
     for (let i = 0; i < 2; i++) {
         const sel = window.getSelection();
-        console.log(sel, sel && sel.toString());
         if (sel !== null) {
             const text = sel.toString();
             if (text !== '') {
