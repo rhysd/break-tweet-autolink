@@ -18,8 +18,8 @@ function isEmptyObject(o: object): o is {} {
     return Object.keys(o).length === 0;
 }
 
-function getElemForConfig(name: ConfigName, id: ElemIdGetFunc): HTMLInputElement {
-    const elem = document.getElementById(id(name));
+function getElemForConfig(id: string): HTMLInputElement {
+    const elem = document.getElementById(id);
     if (elem === null) {
         throw new Error(`<input> does not exist for config '${name}'`);
     }
@@ -33,7 +33,7 @@ export function setConfigToElems(config: ConfigAll | {}, id: ElemIdGetFunc) {
     for (const k of Object.keys(config) as Array<keyof ConfigAll>) {
         const v = c[k];
         if (typeof v === 'boolean') {
-            getElemForConfig(k, id).checked = v;
+            getElemForConfig(id(k)).checked = v;
         }
     }
 }
@@ -43,7 +43,7 @@ export function getConfigFromElems(id: ElemIdGetFunc): ConfigAll {
     // The return type of Object.fromEntries() falls back to {[k: string]: T; [k: number]: T}.
     const ret: TweetAutoLinkBreakerConfig = {};
     for (const name of DEFAULT_CONFIG_NAMES) {
-        ret[name] = getElemForConfig(name, id).checked;
+        ret[name] = getElemForConfig(id(name)).checked;
     }
     return ret as ConfigAll;
 }
