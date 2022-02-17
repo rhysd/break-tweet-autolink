@@ -161,9 +161,9 @@ for (const [c1, t1, e1] of entities) {
     }
 }
 
-describe('TweetAutoLinkBreaker', function() {
+describe('TweetAutoLinkBreaker', function () {
     for (const [what, [text, expected, config]] of Object.entries(tests)) {
-        it('it unlinks ' + what, function() {
+        it('it unlinks ' + what, function () {
             const breaker = new TweetAutoLinkBreaker(config);
             const actual = breaker.breakAutoLinks(text);
             eq(actual, expected, `Input text was '${text}'`);

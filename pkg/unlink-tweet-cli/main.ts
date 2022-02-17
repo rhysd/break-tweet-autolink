@@ -74,10 +74,10 @@ async function getText(args: string[], io: IO) {
 
     let text = '';
     process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (chunk) => {
+    process.stdin.on('data', chunk => {
         text += chunk;
     });
-    return await new Promise<string>((resolve) => {
+    return await new Promise<string>(resolve => {
         process.stdin.on('end', () => resolve(text));
     });
 }

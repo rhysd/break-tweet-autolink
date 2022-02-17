@@ -85,7 +85,7 @@ if (CLIPBOARD_UNSUPPORTED) {
 
         navigator.clipboard
             .readText()
-            .then((text) => {
+            .then(text => {
                 const unlinked = breaker.breakAutoLinks(text);
                 if (text === unlinked) {
                     return;
@@ -95,7 +95,7 @@ if (CLIPBOARD_UNSUPPORTED) {
             .then(() => {
                 checkMark.bounceIn();
             })
-            .catch((err) => {
+            .catch(err => {
                 alert(err.message);
             });
     });

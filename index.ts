@@ -64,7 +64,8 @@ export class TweetAutoLinkBreaker {
             } else if (
                 this.config.urlNoScheme &&
                 'url' in entity &&
-                (!entity.url.startsWith('https://') && !entity.url.startsWith('http://'))
+                !entity.url.startsWith('https://') &&
+                !entity.url.startsWith('http://')
             ) {
                 // URL without scheme
                 replaced = entity.url.replace(RE_DOT, this.char + '.');
