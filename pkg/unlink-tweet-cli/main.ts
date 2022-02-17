@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as clipboardy from 'clipboardy';
+import clipboardy from 'clipboardy';
 import parseArgs = require('minimist');
 import camelize = require('camelize');
 import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
@@ -74,10 +74,10 @@ async function getText(args: string[], io: IO) {
 
     let text = '';
     process.stdin.setEncoding('utf8');
-    process.stdin.on('data', chunk => {
+    process.stdin.on('data', (chunk) => {
         text += chunk;
     });
-    return await new Promise<string>(resolve => {
+    return await new Promise<string>((resolve) => {
         process.stdin.on('end', () => resolve(text));
     });
 }

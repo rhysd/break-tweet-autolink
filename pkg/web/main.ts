@@ -5,7 +5,8 @@ import {
     DEFAULT_CONFIG,
 } from 'break-tweet-autolink';
 
-const CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as Array<keyof ConfigAll>;
+type ConfigName = Exclude<keyof ConfigAll, 'char'>;
+const CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as ConfigName[];
 const CLIPBOARD_UNSUPPORTED =
     navigator.clipboard === undefined ||
     navigator.clipboard.readText === undefined ||
@@ -84,7 +85,7 @@ if (CLIPBOARD_UNSUPPORTED) {
 
         navigator.clipboard
             .readText()
-            .then(text => {
+            .then((text) => {
                 const unlinked = breaker.breakAutoLinks(text);
                 if (text === unlinked) {
                     return;
@@ -94,7 +95,7 @@ if (CLIPBOARD_UNSUPPORTED) {
             .then(() => {
                 checkMark.bounceIn();
             })
-            .catch(err => {
+            .catch((err) => {
                 alert(err.message);
             });
     });

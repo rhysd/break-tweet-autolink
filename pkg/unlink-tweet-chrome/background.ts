@@ -10,7 +10,7 @@ function command(name: string, arg: string | undefined = undefined) {
 // Workaround since navigator.clipboard.readText() in content script still requires user permission
 // with a permission dialog even if 'clipboardRead' permission is set. This may be a bug of Chrome.
 async function readClipboardText() {
-    return new Promise<string>(resolve => {
+    return new Promise<string>((resolve) => {
         const textarea = document.createElement('textarea');
         textarea.addEventListener('input', () => {
             resolve(textarea.value);
@@ -36,17 +36,17 @@ async function executeContentScript() {
     // Note: Check `window.unlinkTweetWasLoaded` to load content script only once.
     // Content script is not loaded until 'Unlink Tweet' feature is triggered to
     // reduce overhead.
-    return new Promise(resolve => {
+    return new Promise<void>((resolve) => {
         chrome.tabs.executeScript(
             {
                 code: 'window.unlinkTweetWasLoaded',
             },
-            ([ret]: [null | boolean]) => {
+            ([ret]) => {
                 if (ret) {
                     resolve();
                     return;
                 }
-                chrome.tabs.executeScript({ file: 'content_script.js' }, resolve);
+                chrome.tabs.executeScript({ file: 'content_script.js' }, () => resolve());
             },
         );
     });
@@ -109,7 +109,7 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
         }
         case 'unlinkTweet': {
             executeContentScript().then(() => {
-                chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+                chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                     if (tabs.length === 0) {
                         console.error('No active tab found');
                         return;
