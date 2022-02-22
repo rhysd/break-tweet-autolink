@@ -1,4 +1,4 @@
-import { MessageFromPopup } from './message';
+import type { MessageFromPopup } from './message';
 import { setConfigToElems, ConfigName, getConfigFromElems, loadConfig } from './config.js';
 
 function getId(name: ConfigName) {

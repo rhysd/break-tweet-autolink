@@ -1,4 +1,4 @@
-import { TweetAutoLinkBreakerConfigAll as ConfigAll, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
+import type { TweetAutoLinkBreakerConfigAll as ConfigAll, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
 
 export type ConfigName = keyof ConfigAll;
 export type ElemIdGetFunc = (n: ConfigName) => string;

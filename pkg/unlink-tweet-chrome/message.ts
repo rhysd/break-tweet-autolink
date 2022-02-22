@@ -1,4 +1,4 @@
-import { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
+import type { TweetAutoLinkBreakerConfigAll as ConfigAll } from 'break-tweet-autolink';
 
 export type Message =
     | {

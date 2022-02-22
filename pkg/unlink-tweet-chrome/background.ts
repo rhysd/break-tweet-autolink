@@ -1,4 +1,4 @@
-import { Message, MessageFromContent, MessageFromPopup } from './message';
+import type { Message, MessageFromContent, MessageFromPopup } from './message';
 import { loadConfig } from './config.js';
 
 function command(name: string, arg: string | undefined = undefined) {

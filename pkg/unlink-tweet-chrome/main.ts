@@ -1,7 +1,7 @@
 import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
-import { Message, MessageFromContent } from './message';
+import type { Message, MessageFromContent } from './message';
 
-function command(name: string, arg: string | undefined = undefined) {
+function command(name: string, arg?: string) {
     if (!document.execCommand(name, false, arg)) {
         throw Error(`Command '${name}' failed with argument ${arg}`);
     }
