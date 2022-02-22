@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rhysd/break-tweet-link.git"
+    "url": "git+https://github.com/rhysd/break-tweet-autolink.git"
   },
   "keywords": [
     "twitter",
@@ -31,9 +31,9 @@
     "LICENSE.txt"
   ],
   "bugs": {
-    "url": "https://github.com/rhysd/break-tweet-link/issues"
+    "url": "https://github.com/rhysd/break-tweet-autolink/issues"
   },
-  "homepage": "https://github.com/rhysd/break-tweet-link#readme",
+  "homepage": "https://github.com/rhysd/break-tweet-autolink#readme",
   "devDependencies": {
     "@types/minimist": "^1.2.2",
     "@types/mocha": "^9.1.0",
