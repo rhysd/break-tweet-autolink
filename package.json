@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -d -p .",
     "watch": "tsc -p . --watch",
-    "lint": "eslint --max-warnings 0 ./**/*.ts",
+    "lint": "eslint --max-warnings 0 ./index.ts ./index_test.ts",
     "mocha": "mocha index_test.js",
     "gh-pages": "bash ./scripts/gh-pages.sh",
     "test": "npm run build && npm run mocha"

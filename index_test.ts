@@ -154,7 +154,7 @@ const entities: ReadonlyArray<[keyof TweetAutoLinkBreakerConfig, string, string]
 for (const [c1, t1, e1] of entities) {
     for (const [c2, t2, e2] of entities) {
         const title = `combination of ${c1} and ${c2}`;
-        const cfg = {} as any;
+        const cfg: { [k: string]: boolean } = {};
         cfg[c1] = true;
         cfg[c2] = true;
         tests[title] = [`begin ${t1} and ${t2} end`, `begin ${e1} and ${e2} end`, cfg];

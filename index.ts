@@ -37,8 +37,8 @@ export class TweetAutoLinkBreaker {
     private readonly char: string;
 
     constructor(cfg?: TweetAutoLinkBreakerConfig | null) {
-        this.config = { ...DEFAULT_CONFIG, ...(cfg || {}) };
-        this.char = this.config.char || DEFAULT_ESCAPE_CHAR;
+        this.config = { ...DEFAULT_CONFIG, ...(cfg ?? {}) };
+        this.char = this.config.char ?? DEFAULT_ESCAPE_CHAR;
     }
 
     breakAutoLinks(text: string): string {
