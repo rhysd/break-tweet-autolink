@@ -10,12 +10,8 @@ function getId(name: ConfigName): string {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadConfig()
-        .then(c => {
-            setConfigToElems(c, getId);
-        })
-        .catch(err => {
-            console.error('Error on reflecting configurations to elements:', err);
-        });
+        .then(c => setConfigToElems(c, getId))
+        .catch(err => console.error('Error on reflecting configurations to elements:', err));
 });
 
 saveButton.addEventListener('click', () => {
@@ -23,9 +19,7 @@ saveButton.addEventListener('click', () => {
         .then(() => {
             saveButton.textContent = 'Saved';
         })
-        .catch(err => {
-            console.error('Error on saving configurations from elements', err);
-        });
+        .catch(err => console.error('Error on saving configurations from elements', err));
 });
 
 resetButton.addEventListener('click', () => {
@@ -34,7 +28,5 @@ resetButton.addEventListener('click', () => {
             setConfigToElems(DEFAULT_CONFIG, getId);
             saveButton.textContent = 'Save';
         })
-        .catch(err => {
-            console.error('Error on configuration reset', err);
-        });
+        .catch(err => console.error('Error on configuration reset', err));
 });

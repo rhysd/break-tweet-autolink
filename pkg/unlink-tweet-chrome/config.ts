@@ -62,7 +62,5 @@ export function loadConfig(): Promise<ConfigAll> {
 }
 
 export function saveConfig(c: ConfigAll): Promise<void> {
-    return new Promise<void>(resolve => {
-        chrome.storage.sync.set(c, resolve);
-    });
+    return new Promise<void>(resolve => chrome.storage.sync.set(c, resolve));
 }

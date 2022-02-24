@@ -13,17 +13,11 @@ getButtonById('unlink-btn').addEventListener('click', () => {
     };
 
     // Note: Background script immediately returns a response after receiving this message.
-    chrome.runtime.sendMessage(msg, () => {
-        window.close();
-    });
+    chrome.runtime.sendMessage(msg, () => window.close());
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     loadConfig()
-        .then(c => {
-            setConfigToElems(c, getId);
-        })
-        .catch(err => {
-            console.error('Could not load configuration on DOMContentLoaded:', err);
-        });
+        .then(c => setConfigToElems(c, getId))
+        .catch(err => console.error('Could not load configuration on DOMContentLoaded:', err));
 });

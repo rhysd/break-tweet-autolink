@@ -98,9 +98,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             };
             chrome.tabs.sendMessage(tabId, msg);
         })
-        .catch(err => {
-            console.error('Could not handle context menu action', err);
-        });
+        .catch(err => console.error('Could not handle context menu action', err));
 });
 
 chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup, _, sendResponse) => {
@@ -135,9 +133,7 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
                         chrome.tabs.sendMessage(tabId, req);
                     });
                 })
-                .catch(err => {
-                    console.error('Failed to execute content script: content_script.js:', err);
-                });
+                .catch(err => console.error('Failed to execute content script: content_script.js:', err));
             break;
         }
         default:
