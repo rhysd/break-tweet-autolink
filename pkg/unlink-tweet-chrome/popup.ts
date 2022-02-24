@@ -1,6 +1,6 @@
 import type { MessageFromPopup } from './message';
-import { setConfigToElems, ConfigName, getConfigFromElems, loadConfig } from './config.js';
-import { getButtonById } from './element.js';
+import { setConfigToElems, ConfigName, getConfigFromElems, loadConfig } from './config';
+import { getButtonById } from './element';
 
 function getId(name: ConfigName): string {
     return `cfg-${name}`;

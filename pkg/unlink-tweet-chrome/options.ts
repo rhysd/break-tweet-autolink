@@ -1,5 +1,5 @@
-import { DEFAULT_CONFIG, setConfigToElems, getConfigFromElems, ConfigName, loadConfig, saveConfig } from './config.js';
-import { getButtonById } from './element.js';
+import { DEFAULT_CONFIG, setConfigToElems, getConfigFromElems, ConfigName, loadConfig, saveConfig } from './config';
+import { getButtonById } from './element';
 
 const saveButton = getButtonById('save-btn');
 const resetButton = getButtonById('reset-btn');

@@ -1,5 +1,5 @@
 import type { Message, MessageFromContent, MessageFromPopup } from './message';
-import { loadConfig } from './config.js';
+import { loadConfig } from './config';
 
 function command(name: string, arg: string | undefined = undefined): void {
     if (!document.execCommand(name, false, arg)) {
