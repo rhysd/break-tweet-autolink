@@ -1,7 +1,7 @@
 import type { Message, MessageFromContent, MessageFromPopup } from './message';
 import { loadConfig } from './config.js';
 
-function command(name: string, arg: string | undefined = undefined) {
+function command(name: string, arg: string | undefined = undefined): void {
     if (!document.execCommand(name, false, arg)) {
         throw Error(`Command '${name}' failed with argument ${arg}`);
     }
@@ -9,7 +9,7 @@ function command(name: string, arg: string | undefined = undefined) {
 
 // Workaround since navigator.clipboard.readText() in content script still requires user permission
 // with a permission dialog even if 'clipboardRead' permission is set. This may be a bug of Chrome.
-async function readClipboardText() {
+async function readClipboardText(): Promise<string> {
     return new Promise<string>(resolve => {
         const textarea = document.createElement('textarea');
         textarea.addEventListener('input', () => {
@@ -22,7 +22,7 @@ async function readClipboardText() {
     });
 }
 
-function writeClipboardText(text: string) {
+function writeClipboardText(text: string): void {
     const textarea = document.createElement('textarea');
     textarea.textContent = text;
     document.body.appendChild(textarea);
@@ -32,7 +32,7 @@ function writeClipboardText(text: string) {
     document.body.removeChild(textarea);
 }
 
-async function executeContentScript() {
+async function executeContentScript(): Promise<void> {
     // Note: Check `window.unlinkTweetWasLoaded` to load content script only once.
     // Content script is not loaded until 'Unlink Tweet' feature is triggered to
     // reduce overhead.
@@ -46,7 +46,9 @@ async function executeContentScript() {
                     resolve();
                     return;
                 }
-                chrome.tabs.executeScript({ file: 'content_script.js' }, () => resolve());
+                chrome.tabs.executeScript({ file: 'content_script.js' }, () => {
+                    resolve();
+                });
             },
         );
     });
@@ -87,16 +89,18 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
     const tabId = tab.id;
     Promise.all([executeContentScript(), readClipboardText(), loadConfig()])
-        .then(([_, text, config]) => {
+        .then(([, text, config]) => {
             const msg: Message = {
                 type: 'contextMenu',
-                selected: info.selectionText || '',
+                selected: info.selectionText ?? '',
                 clipboard: text,
                 config,
             };
             chrome.tabs.sendMessage(tabId, msg);
         })
-        .catch(console.error);
+        .catch(err => {
+            console.error('Could not handle context menu action', err);
+        });
 });
 
 chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup, _, sendResponse) => {
@@ -108,28 +112,32 @@ chrome.runtime.onMessage.addListener((msg: MessageFromContent | MessageFromPopup
             break;
         }
         case 'unlinkTweet': {
-            executeContentScript().then(() => {
-                chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-                    if (tabs.length === 0) {
-                        console.error('No active tab found');
-                        return;
-                    }
+            executeContentScript()
+                .then(() => {
+                    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+                        if (tabs.length === 0) {
+                            console.error('No active tab found');
+                            return;
+                        }
 
-                    const tab = tabs[0];
-                    if (tab.id === undefined) {
-                        console.error('Tab ID is not set to active tab:', tab);
-                        return;
-                    }
+                        const tab = tabs[0];
+                        if (tab.id === undefined) {
+                            console.error('Tab ID is not set to active tab:', tab);
+                            return;
+                        }
 
-                    const tabId = tab.id;
-                    const req: Message = {
-                        type: 'pageAction',
-                        config: msg.config,
-                    };
-                    sendResponse();
-                    chrome.tabs.sendMessage(tabId, req);
+                        const tabId = tab.id;
+                        const req: Message = {
+                            type: 'pageAction',
+                            config: msg.config,
+                        };
+                        sendResponse();
+                        chrome.tabs.sendMessage(tabId, req);
+                    });
+                })
+                .catch(err => {
+                    console.error('Failed to execute content script: content_script.js:', err);
                 });
-            });
             break;
         }
         default:

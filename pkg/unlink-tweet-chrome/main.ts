@@ -1,13 +1,13 @@
 import { TweetAutoLinkBreaker, TweetAutoLinkBreakerConfig } from 'break-tweet-autolink';
 import type { Message, MessageFromContent } from './message';
 
-function command(name: string, arg?: string) {
+function command(name: string, arg?: string): void {
     if (!document.execCommand(name, false, arg)) {
         throw Error(`Command '${name}' failed with argument ${arg}`);
     }
 }
 
-function afterMilliseconds(ms: number) {
+function afterMilliseconds(ms: number): Promise<void> {
     return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
@@ -37,7 +37,7 @@ async function unlinkSelectedText(text: string, clipboard: string, cfg: TweetAut
     return true;
 }
 
-function sendMessage(msg: MessageFromContent) {
+function sendMessage(msg: MessageFromContent): Promise<Message> {
     return new Promise<Message>(resolve => {
         chrome.runtime.sendMessage(msg, resolve);
     });
@@ -112,11 +112,11 @@ async function getSelectionWithSelectAllFallback(): Promise<[Selection | null, s
     return getSelectionWithRetry();
 }
 
-function alert(msg: string) {
+function alert(msg: string): void {
     window.alert('Unlink Tweet:\n' + msg);
 }
 
-async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
+async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig): Promise<void> {
     const [sel, text] = await getSelectionWithSelectAllFallback();
     if (sel === null || text === '') {
         // No text is selected
@@ -143,7 +143,7 @@ async function unlinkTextInSelection(cfg: TweetAutoLinkBreakerConfig) {
     sel.removeAllRanges();
 }
 
-function handleError(err: Error) {
+function handleError(err: Error): void {
     console.error('Error:', err.message, err);
     alert('FATAL ERROR: ' + err.message);
 }
@@ -164,4 +164,4 @@ chrome.runtime.onMessage.addListener((msg: Message) => {
 
 // Note: Set flag to inject this content script only once programmatically from background script.
 // Content script is not loaded until 'Unlink Tweet' feature is triggered to reduce overhead.
-(window as any).unlinkTweetWasLoaded = true;
+(window as any).unlinkTweetWasLoaded = true; // eslint-disable-line @typescript-eslint/no-explicit-any

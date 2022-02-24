@@ -2,6 +2,7 @@ import type { TweetAutoLinkBreakerConfigAll as ConfigAll, TweetAutoLinkBreakerCo
 
 export type ConfigName = keyof ConfigAll;
 export type ElemIdGetFunc = (n: ConfigName) => string;
+type EmptyObject = { [k: string]: unknown };
 
 // prettier-ignore
 export const DEFAULT_CONFIG = {
@@ -14,7 +15,7 @@ export const DEFAULT_CONFIG = {
 };
 export const DEFAULT_CONFIG_NAMES = Object.keys(DEFAULT_CONFIG) as Array<keyof typeof DEFAULT_CONFIG>;
 
-function isEmptyObject(o: object): o is {} {
+function isEmptyObject(o: object): o is EmptyObject {
     return Object.keys(o).length === 0;
 }
 
@@ -26,7 +27,7 @@ function getElemForConfig(id: string): HTMLInputElement {
     return elem as HTMLInputElement;
 }
 
-export function setConfigToElems(config: ConfigAll | {}, id: ElemIdGetFunc) {
+export function setConfigToElems(config: ConfigAll | EmptyObject, id: ElemIdGetFunc): void {
     // Note: The loaded object may be empty when the value is not saved yet
     const c: ConfigAll = isEmptyObject(config) ? DEFAULT_CONFIG : config;
 
@@ -48,9 +49,9 @@ export function getConfigFromElems(id: ElemIdGetFunc): ConfigAll {
     return ret as ConfigAll;
 }
 
-export function loadConfig() {
+export function loadConfig(): Promise<ConfigAll> {
     return new Promise<ConfigAll>(resolve => {
-        chrome.storage.sync.get(DEFAULT_CONFIG_NAMES, (c: ConfigAll | {}) => {
+        chrome.storage.sync.get(DEFAULT_CONFIG_NAMES, (c: ConfigAll | EmptyObject) => {
             if (isEmptyObject(c)) {
                 resolve(DEFAULT_CONFIG);
             } else {
@@ -60,6 +61,8 @@ export function loadConfig() {
     });
 }
 
-export function saveConfig(c: ConfigAll) {
-    return new Promise<void>(resolve => chrome.storage.sync.set(c, resolve));
+export function saveConfig(c: ConfigAll): Promise<void> {
+    return new Promise<void>(resolve => {
+        chrome.storage.sync.set(c, resolve);
+    });
 }

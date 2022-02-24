@@ -49,5 +49,36 @@
           "error",
           "in-try-catch"
         ]
-    }
+    },
+    "ignorePatterns": ["**/*.d.ts"],
+    "overrides": [
+        {
+            "files": [
+                "index_test.ts"
+            ],
+            "plugins": [
+                "mocha"
+            ],
+            "extends": [
+                "plugin:mocha/recommended"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/camelcase": "off",
+                "mocha/no-setup-in-describe": "off",
+                "mocha/no-hooks-for-single-case": "off",
+                "mocha/max-top-level-suites": "off",
+                "mocha/no-exclusive-tests": "error"
+            }
+        },
+        {
+            "files": [
+                "pkg/unlink-tweet-chrome/*.ts"
+            ],
+            "parserOptions": {
+                "project": "./pkg/unlink-tweet-chrome/tsconfig.json"
+            }
+        }
+    ]
 }
